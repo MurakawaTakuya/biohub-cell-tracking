@@ -25,7 +25,7 @@ B004（Geometric Fusion の短時間版）と E002（B004 + DivNet gate）を提
 | E002 | `versavice/biohub-geo-divnet-fast` v1 | E001 の短時間版（出力は E001 と同一） | 56508400 | 0.946 |
 | E003 | `versavice/biohub-e003-divnet-gate03` v1 | B004 + DivNet gate 0.3（分裂 71 件） | 56513351 | scoring 中 |
 | E004 | `versavice/biohub-e004-divnet-rank` v1 | B004 + DivNet による並べ替え | 提出していない（B004 と 19 行しか違わない） | — |
-| E005 | `versavice/biohub-e005-divnet-rescue07` | B004 + DeepCenter で捨てた候補を DivNet 0.7 以上で救済 | 準備済み | — |
+| E005 | `versavice/biohub-e005-divnet-rescue07` v1 | B004 + DeepCenter で捨てた候補を DivNet 0.7 以上で救済（分裂 +6） | 実行済み・提出していない | — |
 | B005 | `versavice/biohub-x138-full` | x138 をそのまま fork（V1284 head が公開された） | 準備済み | — |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（CV の値） |
 
