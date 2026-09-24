@@ -1,0 +1,16 @@
+{
+  "id": "versavice/biohub-lb-0-897-public-baseline",
+  "title": "Biohub LB 0 897 public baseline",
+  "code_file": "lb0897_baseline.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": ["pilkwang/biohub-tracking-support-pack-50ep-v1"],
+  "competition_sources": ["biohub-cell-tracking-during-development"],
+  "kernel_sources": [],
+  "model_sources": []
+}

@@ -1,0 +1,23 @@
+{
+  "id": "versavice/biohub-two-fold-ilp-detector-sweep",
+  "title": "Biohub two-fold ILP detector sweep",
+  "code_file": "ilp_pilot.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "pilkwang/biohub-tracking-support-pack-50ep-v1"
+  ],
+  "competition_sources": [
+    "biohub-cell-tracking-during-development"
+  ],
+  "kernel_sources": [
+    "versavice/biohub-fold0-edge-only-training-6k",
+    "versavice/biohub-fold1-edge-only-training-4k"
+  ],
+  "model_sources": []
+}

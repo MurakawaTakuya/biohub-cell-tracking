@@ -1,0 +1,16 @@
+{
+  "id": "versavice/biohub-cv-evaluate-saved-folds",
+  "title": "Biohub CV evaluate saved folds",
+  "code_file": "evaluate_saved_folds.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": ["pilkwang/biohub-tracking-support-pack-50ep-v1", "versavice/biohub-cv-temporal-fold-weights-v1"],
+  "competition_sources": ["biohub-cell-tracking-during-development"],
+  "kernel_sources": [],
+  "model_sources": []
+}

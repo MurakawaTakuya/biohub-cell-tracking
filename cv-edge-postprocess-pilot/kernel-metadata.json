@@ -1,0 +1,22 @@
+{
+  "id": "versavice/biohub-edge-postprocess-pilot",
+  "title": "Biohub edge postprocess pilot",
+  "code_file": "edge_postprocess_pilot.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "dataset_sources": [
+    "pilkwang/biohub-tracking-support-pack-50ep-v1"
+  ],
+  "competition_sources": [
+    "biohub-cell-tracking-during-development"
+  ],
+  "kernel_sources": [
+    "versavice/biohub-fold0-edge-oof-sweep",
+    "versavice/biohub-fold1-edge-oof-sweep"
+  ],
+  "model_sources": []
+}

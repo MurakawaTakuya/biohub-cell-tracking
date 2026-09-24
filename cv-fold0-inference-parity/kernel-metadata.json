@@ -1,0 +1,22 @@
+{
+  "id": "versavice/biohub-fold0-inference-parity",
+  "title": "Biohub fold0 inference parity",
+  "code_file": "fold0_inference_parity.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "pilkwang/biohub-tracking-support-pack-50ep-v1"
+  ],
+  "competition_sources": [
+    "biohub-cell-tracking-during-development"
+  ],
+  "kernel_sources": [
+    "versavice/biohub-fold0-pilot-5ep"
+  ],
+  "model_sources": []
+}

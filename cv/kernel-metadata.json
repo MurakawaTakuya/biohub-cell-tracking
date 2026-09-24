@@ -1,0 +1,16 @@
+{
+  "id": "versavice/biohub-cv-fold0-temporal",
+  "title": "Biohub CV fold0 temporal",
+  "code_file": "fold0_temporal_cv.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": ["pilkwang/biohub-tracking-support-pack-50ep-v1"],
+  "competition_sources": ["biohub-cell-tracking-during-development"],
+  "kernel_sources": [],
+  "model_sources": []
+}

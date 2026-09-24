@@ -1,0 +1,39 @@
+# Credentials
+kaggle.json
+access_token
+*.token
+.env
+.env.*
+
+# Python / tooling
+__pycache__/
+*.py[cod]
+.venv/
+.ipynb_checkpoints/
+.DS_Store
+.codebase-memory/
+
+# Competition data, weights and large artifacts
+data/
+*.zarr/
+*.geff/
+*.zip
+*.tar
+*.tar.gz
+*.whl
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.npy
+
+# Kaggle kernel outputs, logs and submissions (local only)
+local_outputs/
+*-output/
+*-output-v*/
+*-output-v*/
+kernel-output*/
+kernel-run/
+leaderboard-current/
+submission*.csv
+*.log

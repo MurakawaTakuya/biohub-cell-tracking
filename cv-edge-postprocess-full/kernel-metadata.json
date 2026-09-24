@@ -1,0 +1,22 @@
+{
+  "id": "versavice/biohub-edge-postprocess-full-oof",
+  "title": "Biohub edge postprocess full OOF",
+  "code_file": "edge_postprocess_full.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_tpu": "false",
+  "enable_internet": "false",
+  "dataset_sources": [
+    "pilkwang/biohub-tracking-support-pack-50ep-v1"
+  ],
+  "competition_sources": [
+    "biohub-cell-tracking-during-development"
+  ],
+  "kernel_sources": [
+    "versavice/biohub-fold0-full-oof-edge500",
+    "versavice/biohub-fold1-full-oof-edge300"
+  ],
+  "model_sources": []
+}
