@@ -4,8 +4,9 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).parent
-SRC = HERE.parent / "submit-geometric-fusion" / "biohub-geometric-fusion.ipynb"
-DST = HERE / "geo-divnet.ipynb"
+# Usage: make_notebook.py [SRC.ipynb DST.ipynb]  (default: Geometric Fusion fork -> geo-divnet.ipynb)
+SRC = Path(sys.argv[1]) if len(sys.argv) > 2 else HERE.parent / "submit-geometric-fusion" / "biohub-geometric-fusion.ipynb"
+DST = Path(sys.argv[2]) if len(sys.argv) > 2 else HERE / "geo-divnet.ipynb"
 
 DIVNET_CODE = r'''
 # ---------------------------------------------------------------- DivNet parent gate
@@ -185,7 +186,8 @@ for cell in nb["cells"]:
     cell["source"] = src.splitlines(keepends=True)
     hits += 1
 assert hits == 1, hits
-nb["cells"][0]["source"] = ("".join(nb["cells"][0]["source"]).replace(
-    "BIOHUB_SCORE_AXIS = 'v4:", "BIOHUB_SCORE_AXIS = 'v4+divnet-gate0.5:", 1)).splitlines(keepends=True)
+if len(sys.argv) <= 2:  # keep the original geo-divnet notebook byte-identical
+    nb["cells"][0]["source"] = ("".join(nb["cells"][0]["source"]).replace(
+        "BIOHUB_SCORE_AXIS = 'v4:", "BIOHUB_SCORE_AXIS = 'v4+divnet-gate0.5:", 1)).splitlines(keepends=True)
 DST.write_text(json.dumps(nb, indent=1))
 print("wrote", DST)
