@@ -3,11 +3,11 @@
 コンペ: <https://www.kaggle.com/competitions/biohub-cell-tracking-during-development>（コードコンペ。締切 2026-09-29）
 チーム: Mositaku（`versavice`）
 
-## 今の再開地点（2026-09-25 11:53 UTC）
+## 今の再開地点（2026-09-26 07:06 JST）
 
-- 最高は **E006 = 0.955**（x138 + V1284 head + DivNet gate 0.3）。95 位 / 3,899 チームで銀圏（銀は 194 位まで、その順位のスコアは 0.953）。
-- E009（E006 + weak-leaf pruning）も 0.955 で同点。E007（gate 0.5）は 0.954。
-- 暫定の最終提出は **E006 + B005**。次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
+- 最高は **E010 = 0.958**（E006 + DivNet rescue 0.7）。**61 位 / 3,914 チーム**（銀は 195 位まで、その順位のスコアは 0.954。金は 17 位まで、同 0.965）。
+- E011（E006 + スムージング後の weak-leaf pruning）は 0.955 で、E006 と同じ。
+- 最終提出の 2 本目（E006 か B005 か）は、ユーザーと相談して決める。次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
 
 ## 結果の一覧
 
@@ -27,8 +27,8 @@
 | E007 | `versavice/biohub-e007-x138-gate05` v1 | B005 + DivNet gate 0.5（分裂 30） | 56539425 | 0.954 |
 | E008 | `versavice/biohub-e008-x138-gate04` v1 | B005 + DivNet gate 0.4（分裂 31） | 実行済み・提出していない | — |
 | E009 | `versavice/biohub-e009-x138-gate03-leaf03` v1 | E006 + weak-leaf pruning 0.3（513 ノード削除） | 56540659 | 0.955 |
-| E010 | `versavice/biohub-e010-x138-rescue07` v1 | E006 + DivNet rescue 0.7（分裂 34 → 54、純粋な追加） | 56554089 | scoring 中 |
-| E011 | `versavice/biohub-e011-x138-leafpost03` v1 | E006 + weak-leaf pruning 0.3（スムージングの後。E006 から 513 ノード削除のみ） | 56554092 | scoring 中 |
+| E010 | `versavice/biohub-e010-x138-rescue07` v1 | E006 + DivNet rescue 0.7（分裂 34 → 54、純粋な追加） | 56554089 | **0.958** |
+| E011 | `versavice/biohub-e011-x138-leafpost03` v1 | E006 + weak-leaf pruning 0.3（スムージングの後。E006 から 513 ノード削除のみ） | 56554092 | 0.955 |
 | A003 | サーバー（`server/gt_division_check.py`） | 可視の 4 動画で、予測した分裂を正解と照合 | — | 正解の分裂が 3 件しかなく、どの版も一致 0 件。判断できない |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
