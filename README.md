@@ -3,11 +3,11 @@
 コンペ: <https://www.kaggle.com/competitions/biohub-cell-tracking-during-development>（コードコンペ。締切 2026-09-29）
 チーム: Mositaku（`versavice`）
 
-## 今の再開地点（2026-09-25）
+## 今の再開地点（2026-09-25 11:53 UTC）
 
-- 最高は **E006 = 0.955**（x138 + V1284 head + DivNet gate 0.3）。87 位 / 3,894 チームで銀圏（01:26 UTC）。
-- 暫定の最終提出は **E006 + B005**（外部レビューでも推奨された）。
-- 次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
+- 最高は **E006 = 0.955**（x138 + V1284 head + DivNet gate 0.3）。95 位 / 3,899 チームで銀圏（銀は 194 位まで、その順位のスコアは 0.953）。
+- E009（E006 + weak-leaf pruning）も 0.955 で同点。E007（gate 0.5）は 0.954。
+- 暫定の最終提出は **E006 + B005**。次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
 
 ## 結果の一覧
 
@@ -24,9 +24,9 @@
 | E005 | `versavice/biohub-e005-divnet-rescue07` v1 | B004 + DeepCenter で捨てた候補を DivNet 0.7 以上で救済（分裂 +6） | 実行済み・提出していない | — |
 | B005 | `versavice/biohub-x138-full` v1 | x138 をそのまま fork（V1284 head が公開された） | 56518233 | **0.953** |
 | E006 | `versavice/biohub-e006-x138-gate03` v1 | B005 + DivNet gate 0.3（分裂 62 → 34） | 56527266 | **0.955** |
-| E007 | `versavice/biohub-e007-x138-gate05` v1 | B005 + DivNet gate 0.5（分裂 30） | 56539425 | scoring 中 |
+| E007 | `versavice/biohub-e007-x138-gate05` v1 | B005 + DivNet gate 0.5（分裂 30） | 56539425 | 0.954 |
 | E008 | `versavice/biohub-e008-x138-gate04` v1 | B005 + DivNet gate 0.4（分裂 31） | 実行済み・提出していない | — |
-| E009 | `versavice/biohub-e009-x138-gate03-leaf03` v1 | E006 + weak-leaf pruning 0.3（513 ノード削除） | 56540659 | scoring 中 |
+| E009 | `versavice/biohub-e009-x138-gate03-leaf03` v1 | E006 + weak-leaf pruning 0.3（513 ノード削除） | 56540659 | 0.955 |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
 7 月の提出（最高 0.901）は [docs/roadmap_2026-07.md](docs/roadmap_2026-07.md) を参照。
