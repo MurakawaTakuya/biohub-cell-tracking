@@ -3,10 +3,10 @@
 コンペ: <https://www.kaggle.com/competitions/biohub-cell-tracking-during-development>（コードコンペ。締切 2026-09-29）
 チーム: Mositaku（`versavice`）
 
-## 今の再開地点（2026-09-25 00:13 UTC）
+## 今の再開地点（2026-09-25）
 
-- 最高は **E006 = 0.955**（x138 + V1284 head + DivNet gate 0.3）。**85 位 / 3,892 チームで銀圏**（銀は 194 位まで、その順位のスコアは 0.953）。
-- 次に 0.953 を出したのは B005（x138 そのまま）。0.953 以上は 291 チーム。
+- 最高は **E006 = 0.955**（x138 + V1284 head + DivNet gate 0.3）。87 位 / 3,894 チームで銀圏（01:26 UTC）。
+- 暫定の最終提出は **E006 + B005**（外部レビューでも推奨された）。
 - 次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
 
 ## 結果の一覧
@@ -26,7 +26,7 @@
 | E006 | `versavice/biohub-e006-x138-gate03` v1 | B005 + DivNet gate 0.3（分裂 62 → 34） | 56527266 | **0.955** |
 | E007 | `versavice/biohub-e007-x138-gate05` v1 | B005 + DivNet gate 0.5（分裂 30） | 実行済み・提出していない | — |
 | E008 | `versavice/biohub-e008-x138-gate04` v1 | B005 + DivNet gate 0.4（分裂 31） | 実行済み・提出していない | — |
-| A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（CV の値） |
+| A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
 7 月の提出（最高 0.901）は [docs/roadmap_2026-07.md](docs/roadmap_2026-07.md) を参照。
 

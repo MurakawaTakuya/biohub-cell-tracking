@@ -113,7 +113,7 @@ def main():
     ap.add_argument("--out", default="runs/divnet_check")
     ap.add_argument("--neg-per-movie", type=int, default=20)
     ap.add_argument("--max-movies", type=int, default=0)
-    ap.add_argument("--variant", default="base", choices=["base", "marker_first", "no_pad_clamp"])
+    ap.add_argument("--variant", default="base", choices=["base", "marker_first"])
     args = ap.parse_args()
 
     out = Path(args.out); out.mkdir(parents=True, exist_ok=True)

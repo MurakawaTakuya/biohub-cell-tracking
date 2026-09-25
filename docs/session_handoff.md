@@ -1,16 +1,26 @@
 # セッションの引き継ぎ
 
-最終更新: 2026-09-24
+最終更新: 2026-09-25 02:00 UTC ごろ
 
-## 今の再開地点: B004 と E002 が scoring 中
+## 今の再開地点: 最終提出の暫定の 2 本は E006 + B005
 
-- 提出 56508399（B004、`versavice/biohub-geo-fast` v1）と 56508400（E002、`versavice/biohub-geo-divnet-fast` v1）を 2026-09-24 01:34 UTC に提出した。
-- どちらも Kernel の実行は約 35 分。出力は元の版（B002、E001）と全行一致することを確認済み。
-- 再提出はしない。PENDING のまま待つ。
+- 最高は **E006 = 0.955**（提出 56527266、`versavice/biohub-e006-x138-gate03` v1）。87 位 / 3,894 チームで銀圏（2026-09-25 01:26 UTC）。
+- 暫定の最終提出: **E006（56527266）と B005（56518233、0.953）**。外部レビュー（`docs/consult_2026-09-25.md` への回答）でも、この組み合わせが推奨された。
+  - B005 は E006 から DivNet gate だけを除いたもの。DivNet が Private で外れたときの保険になる。
+  - E003（0.949、Geometric Fusion 系）は、E003 にも DivNet gate が入っていて、E006 と同じ失敗をかぶる。公開 LB でも 0.004 低いので、2 本目には選ばない。
+- 最終提出のチェックは、ユーザーが Kaggle の Submissions ページで行う。9/28 までに確定させる。
+- scoring 中の提出はない。E007（gate 0.5）と E008（gate 0.4）は実行済みで、提出していない。
 
-### 次にやること
+## 次の候補（優先順）
 
-1. スコアを確認する。表の表示だけでは失敗が分からないので、API の `errorDescription` も見る。
+1. **E007 を 1 本だけ提出して確認する**（ユーザーの OK が必要）。
+   - 同点なら E006 を維持する。下がっても「0.3 が最適」とは解釈しない。上がったら、変わったイベントを診断してから置き換えを検討する（B005 は保険として残す）。
+   - E008 は E006 と E007 の中間なので、続けて出さない。
+2. **B005、E006、E007 の差分を診断する**: ノード、エッジ、分裂イベント（親と 2 つの娘）について、共通、削除、新規を分けて集計する。捨てた候補（動画、時刻、親、DivNet のスコア、最終的に採用されたか）と、変更が特定の動画に偏っていないかを見る。CSV の総行数だけで判断しない。
+3. **条件付き**: E006 に weak-leaf pruning（Geometric Fusion の `prune_weak_leaf_nodes`、閾値 0.3、スイープしない）だけを移植する。x138 にはこの処理がない。削除対象が実際にあり、削除前後のグラフを確認できた場合だけ提出する。
+4. **やらない**: DivNet の学習し直しを主戦略にすること、3 本目の検出器の追加、Geometric Fusion の設定一式の移植、複数の変更の同時投入。
+
+## 安全に打てる確認コマンド
 
 ```bash
 python3 - <<'EOF'
@@ -20,29 +30,18 @@ for s in api.competition_submissions('biohub-cell-tracking-during-development')[
     d = s.to_dict()
     print(d['ref'], d.get('description', '')[:50], d.get('status'), d.get('publicScore'), (d.get('errorDescription') or '')[:60])
 EOF
+kaggle competitions leaderboard biohub-cell-tracking-during-development -d -p local_outputs/lb
 ```
 
-2. 最終提出の 2 本を、ユーザーと相談して決める。Kaggle の Submissions ページでユーザーがチェックする。
-   - 案: B004（0.948 が出た場合）と、E002 か B001（0.947）。
-3. 時間が残っていれば、次の候補（下記）を検討する。
+## 注意（2026-09-25 の外部レビューで指摘された点）
 
-## 次の候補
-
-- **E003（gate 0.3）と E004（DivNet による並べ替え）は準備済みで、push していない**（`runs/E003.md`、`runs/E004.md`）。B004 と E002 のスコアを見てから、どちらを出すか決める。
-  - E002 が B004 より低い場合: E004 を優先する。
-  - E002 が B004 より高い場合: E003 を優先する。
-- 注意: `submit-geo-divnet/make_notebook.py` に並べ替えの機能を足したため、ローカルの `geo-divnet.ipynb` は push した E001 と少し違う。重みの既定値は 0 なので、動作は同じ。`server/make_fast.py` を実行し直すと `submit-geo-divnet-fast/` も作り直される。
-- **DivNet を学習し直す**: 動画単位で hold-out を作って学習し直し、候補を捨てる基準を CV で決める。サーバーで行う。GPU を使う前にユーザーの承認をとる。
-
-## 安全に打てる確認コマンド
-
-```bash
-kaggle competitions submissions biohub-cell-tracking-during-development | head -8
-kaggle kernels status versavice/biohub-geo-fast
-ssh 139-home 'tmux ls | grep biohub; nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader'
-```
+- A001 の AUC 0.832 は、学習済みの動画が大半を占める動作確認であり、CV ではない。gate が本番の候補に対してどれだけ正しく判定できているかの証拠でもない。
+- DivNet gate の +0.002 は 2 つの系統で出たが、どちらも同じ公開テスト上の結果。Private での改善幅は予測できない。
+- gate は、対称性のチェック、並べ替え、上限の処理より前に入っている。そのため、候補を捨てると別の候補が採用されることがあり、分裂数の差 = 誤った分裂を消した数、とは言えない。
+- `safe_division_skipped_cap` が増えるのは、全体の上限で打ち切ったときだけ。フレームごとの上限で打ち切ったときは増えない。
+- 分裂の数が数件違うだけでも、分裂の評価は分母が小さいので、スコアへの影響が小さいとは限らない。
 
 ## サーバーの状態（2026-09-24）
 
 - データは `/mnt/HDD18TB/murakawa/biohub-cell-tracking/`。学習データのコピーが NVMe の `~/biohub_fast/train` にある。
-- 実行中の biohub ジョブはない（tmux の `biohub-download`、`biohub-copy`、`biohub-divnet-check` はすべて終了済み）。
+- 実行中の biohub ジョブはない。
