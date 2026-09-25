@@ -1,0 +1,511 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biohub 細胞追跡ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=BIZ+UDPGothic:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#eef2f3; --surface:#ffffff; --ink:#13222b; --muted:#56666f; --line:#d3dce0;
+  --gfp:#16825a; --gfp-soft:#dcefe6; --mag:#b8396f; --mag-soft:#f6e1ea; --amber:#9a5a12; --amber-soft:#fbeedb;
+  --geo:#5b7384; --chart-bg:#f7f9fa; --canvas-bg:#0f1a20; --canvas-cell:#5fe0a6; --canvas-div:#ff7fb4;
+  --display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --body:"BIZ UDPGothic","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0c1419; --surface:#141f26; --ink:#dfe8ec; --muted:#98a8b0; --line:#26343c;
+    --gfp:#4fd39a; --gfp-soft:#123127; --mag:#ef86b5; --mag-soft:#3a1827; --amber:#f0b35c; --amber-soft:#35260f;
+    --geo:#8fa7b8; --chart-bg:#101a20; --canvas-bg:#081014;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0c1419; --surface:#141f26; --ink:#dfe8ec; --muted:#98a8b0; --line:#26343c;
+  --gfp:#4fd39a; --gfp-soft:#123127; --mag:#ef86b5; --mag-soft:#3a1827; --amber:#f0b35c; --amber-soft:#35260f;
+  --geo:#8fa7b8; --chart-bg:#101a20; --canvas-bg:#081014;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.85 var(--body);padding-inline:16px}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.35;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(32px,5.4vw,58px);font-weight:900}
+h2{font-size:clamp(24px,3.2vw,34px);font-weight:900}
+h3{font-size:19px;font-weight:700}
+p{margin:0}
+.lede{font-size:17px;max-width:62ch;color:var(--muted)}
+.label{font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gfp)}
+.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.small{font-size:13px;color:var(--muted);line-height:1.7}
+a{color:var(--gfp);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px}
+nav.toc .wrap{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:13px}
+nav.toc a{color:var(--muted);text-decoration:none}
+nav.toc a:hover{color:var(--ink)}
+
+section{padding-block:56px;border-bottom:1px solid var(--line)}
+section > .wrap{display:grid;gap:22px}
+
+/* hero */
+.hero{padding-block:40px 48px}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:32px;align-items:center}
+.scope{position:relative;aspect-ratio:1/1;max-width:100%;border-radius:50%;background:var(--canvas-bg);overflow:hidden;box-shadow:inset 0 0 0 10px color-mix(in srgb,var(--ink) 12%,transparent)}
+.scope canvas{width:100%;height:100%;display:block}
+.scope .hud{position:absolute;left:50%;bottom:9%;transform:translateX(-50%);font:600 12px var(--mono);color:#9fd9bf;letter-spacing:.08em;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:6px}
+.stats div{background:var(--surface);padding:14px 16px;display:grid;gap:2px}
+.stats b{font:600 22px/1.2 var(--mono);font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted)}
+.hero-copy{display:grid;gap:18px}
+
+/* task strip */
+.frames{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.frame{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.frame svg{width:100%;height:auto;display:block}
+.frame p{font-size:14px;margin-top:8px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:6px}
+
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.fact{border-top:3px solid var(--gfp);padding-top:10px;display:grid;gap:4px}
+.fact b{font:600 20px/1.3 var(--mono)}
+.fact span{font-size:13px;color:var(--muted)}
+
+/* formula */
+.formula{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:14px}
+.eq{font:600 clamp(16px,2.4vw,22px)/1.6 var(--mono);text-align:center}
+.eq .w{color:var(--mag)}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:stretch}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:6px;align-content:start;position:relative}
+.step .k{font:600 11px var(--mono);color:var(--muted);letter-spacing:.08em}
+.step h3{font-size:15px}
+.step p{font-size:13px;color:var(--muted);line-height:1.65}
+.step.hot{border-color:var(--amber);background:var(--amber-soft)}
+.callout{border-left:4px solid var(--amber);background:var(--amber-soft);padding:14px 16px;border-radius:0 10px 10px 0;font-size:15px}
+
+/* pipeline */
+.pipe{display:grid;gap:8px}
+.stage{display:grid;grid-template-columns:150px 1fr auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.stage .t{font:700 15px var(--display)}
+.stage .d{font-size:14px;color:var(--muted);line-height:1.6}
+.chip{font:600 11px var(--mono);padding:4px 8px;border-radius:999px;white-space:nowrap;border:1px solid currentColor}
+.chip.pk{color:var(--geo)} .chip.x{color:var(--gfp)} .chip.us{color:var(--mag);background:var(--mag-soft)}
+.stage.us{border-color:var(--mag);box-shadow:0 0 0 1px var(--mag) inset}
+.arrow{justify-self:center;color:var(--muted);font:600 14px var(--mono);line-height:1}
+
+/* charts */
+.chart{background:var(--chart-bg);border:1px solid var(--line);border-radius:14px;padding:12px;overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:560px;height:auto}
+.chart text{fill:var(--muted);font:12px var(--mono)}
+.chart .strong{fill:var(--ink);font-weight:600}
+.ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;font-size:14px}
+.ctrl input[type=range]{width:min(320px,100%);accent-color:var(--mag)}
+.readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.readout div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.readout b{display:block;font:600 22px/1.2 var(--mono);font-variant-numeric:tabular-nums}
+.readout span{font-size:12px;color:var(--muted)}
+
+/* table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font:600 12px var(--mono);color:var(--muted);letter-spacing:.06em;background:var(--chart-bg)}
+td.num,th.num{text-align:right}
+tr:last-child td{border-bottom:0}
+tr.best td{background:var(--mag-soft)}
+.tag{font:600 11px var(--mono);padding:2px 7px;border-radius:6px;background:var(--gfp-soft);color:var(--gfp);white-space:nowrap}
+.tag.geo{background:color-mix(in srgb,var(--geo) 18%,transparent);color:var(--geo)}
+.tag.fail{background:var(--amber-soft);color:var(--amber)}
+
+.findings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.finding{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:6px}
+.finding h3{font-size:16px}
+.finding p{font-size:14px;color:var(--muted);line-height:1.7}
+
+.final{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pick{border:2px solid var(--gfp);border-radius:14px;padding:18px;background:var(--surface);display:grid;gap:6px}
+.pick.second{border-color:var(--geo)}
+.pick b{font:600 28px var(--mono)}
+
+footer{padding-block:36px 56px;font-size:13px;color:var(--muted)}
+footer ul{margin:8px 0 0;padding-left:18px}
+
+@media (max-width:820px){
+  .hero-grid,.twocol,.final,.findings{grid-template-columns:1fr}
+  .scope{max-width:420px;justify-self:center;width:100%}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow{grid-template-columns:1fr}
+  .stage{grid-template-columns:1fr;gap:6px}
+  .frames{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .stats,.readout{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<nav class="toc" aria-label="目次"><div class="wrap">
+  <a href="#task">課題</a><a href="#data">データ</a><a href="#metric">評価</a><a href="#submit">提出の仕組み</a><a href="#method">今の最良手法</a><a href="#divnet">DivNet</a><a href="#journey">試したこと</a><a href="#learned">わかったこと</a><a href="#final">最終提出</a>
+</div></nav>
+
+<header class="hero"><div class="wrap hero-grid">
+  <div class="hero-copy">
+    <p class="label">Kaggle · Biohub Cell Tracking During Development</p>
+    <h1>胚の中の細胞を、<br>1つ残らず<br>追いかける。</h1>
+    <p class="lede">ゼブラフィッシュの胚を撮った 3D の顕微鏡動画から、細胞を見つけ、次のフレームのどの細胞とつながるかを決め、分裂の瞬間を見つける。そういうコンペです。このページでは、課題の中身と、私たちがここまでに試したこと、今いちばん良い手法をまとめます。</p>
+    <div class="stats" aria-label="現状">
+      <div><b>95<small style="font-size:13px"> 位</small></b><span>3,899 チーム中（9/25 12:03 UTC）</span></div>
+      <div><b>0.955</b><span>公開 LB の最高（E006）</span></div>
+      <div><b>9/29</b><span>締切 23:59 UTC</span></div>
+    </div>
+    <p class="small">銀メダル圏は 194 位まで（その順位のスコアは 0.953）。数字は記載時点の観測値で、Private LB は締切後に公開されます。</p>
+  </div>
+  <div class="scope" aria-label="細胞の核が動き、分裂する様子のアニメーション">
+    <canvas id="scope" width="720" height="720"></canvas>
+    <div class="hud" id="hud">t = 0 / 100</div>
+  </div>
+</div></header>
+
+<section id="task"><div class="wrap">
+  <p class="label">01 · 課題</p>
+  <h2>やることは、見つける・つなぐ・分裂を見つけるの 3 つ。</h2>
+  <p class="lede">各フレームで細胞の核の中心を点として出し（ノード）、隣り合うフレームの同じ細胞どうしを線で結びます（エッジ）。1 つの細胞から 2 本の線が出ていれば、そこが分裂です。出力は、ノードとエッジを並べた 1 つの CSV です。</p>
+  <div class="frames">
+    <div class="frame">
+      <svg viewBox="0 0 240 150" role="img" aria-label="検出: フレーム t の細胞を点で示す">
+        <rect x="1" y="1" width="238" height="148" rx="10" fill="var(--chart-bg)" stroke="var(--line)"/>
+        <g fill="var(--gfp)"><circle cx="60" cy="50" r="9"/><circle cx="130" cy="90" r="9"/><circle cx="190" cy="45" r="9"/><circle cx="85" cy="115" r="9"/></g>
+        <text x="12" y="140" fill="var(--muted)" font-size="11" font-family="JetBrains Mono, monospace">frame t</text>
+      </svg>
+      <p><b>検出</b>: 3D の画像から、核の中心 (z, y, x) を見つける。</p>
+    </div>
+    <div class="frame">
+      <svg viewBox="0 0 240 150" role="img" aria-label="追跡: t と t+1 の同じ細胞を線で結ぶ">
+        <rect x="1" y="1" width="238" height="148" rx="10" fill="var(--chart-bg)" stroke="var(--line)"/>
+        <g stroke="var(--muted)" stroke-width="2"><line x1="50" y1="50" x2="78" y2="58"/><line x1="120" y1="95" x2="148" y2="88"/><line x1="180" y1="42" x2="200" y2="60"/></g>
+        <g fill="var(--gfp)" opacity=".4"><circle cx="50" cy="50" r="8"/><circle cx="120" cy="95" r="8"/><circle cx="180" cy="42" r="8"/></g>
+        <g fill="var(--gfp)"><circle cx="78" cy="58" r="9"/><circle cx="148" cy="88" r="9"/><circle cx="200" cy="60" r="9"/></g>
+        <text x="12" y="140" fill="var(--muted)" font-size="11" font-family="JetBrains Mono, monospace">t → t+1</text>
+      </svg>
+      <p><b>追跡</b>: 前のフレームのどの細胞と同じかを決め、エッジを張る。</p>
+    </div>
+    <div class="frame">
+      <svg viewBox="0 0 240 150" role="img" aria-label="分裂: 1つの細胞から2本の線が出る">
+        <rect x="1" y="1" width="238" height="148" rx="10" fill="var(--chart-bg)" stroke="var(--line)"/>
+        <g stroke="var(--mag)" stroke-width="2.4"><line x1="90" y1="75" x2="150" y2="45"/><line x1="90" y1="75" x2="150" y2="108"/></g>
+        <circle cx="90" cy="75" r="11" fill="var(--gfp)" opacity=".45"/>
+        <g fill="var(--mag)"><circle cx="150" cy="45" r="8"/><circle cx="150" cy="108" r="8"/></g>
+        <text x="12" y="140" fill="var(--muted)" font-size="11" font-family="JetBrains Mono, monospace">親 → 2 つの娘</text>
+      </svg>
+      <p><b>分裂</b>: 1 つのノードから、次のフレームへ 2 本のエッジを出す。</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="data"><div class="wrap">
+  <p class="label">02 · データ</p>
+  <h2>1 本の動画は、100 フレームの 3D ボリューム。</h2>
+  <div class="facts">
+    <div class="fact"><b class="num">100 × 64 × 256 × 256</b><span>フレーム × z × y × x（uint16、Zarr v3）</span></div>
+    <div class="fact"><b class="num">1.625 / 0.406 µm</b><span>1 ボクセルの大きさ（z / xy）。z は xy の 4 倍粗い</span></div>
+    <div class="fact"><b class="num">199 本</b><span>学習用の動画（2 つの胚 44b6 と 6bba から切り出したもの）</span></div>
+    <div class="fact"><b class="num">151 件</b><span>学習データ全体の、正解の分裂の数。とても少ない</span></div>
+  </div>
+  <p class="lede">正解のラベルは一部の細胞にしか付いていません（疎なアノテーション）。そのため、ラベルのない細胞を検出しても、それが正しいのか間違いなのかは、学習データからは分かりません。公開テストとして見えるのは 4 本の動画だけで、それ以外は採点時にだけ使われます。</p>
+</div></section>
+
+<section id="metric"><div class="wrap">
+  <p class="label">03 · 評価</p>
+  <h2>ほとんどはエッジの正しさで決まり、分裂は 0.1 倍で効く。</h2>
+  <div class="formula">
+    <div class="eq">score = adjusted edge Jaccard <span class="w">+ 0.1 ×</span> division Jaccard</div>
+    <p class="small" style="text-align:center">式は discussion 727154 の引用による。Jaccard = 正解と一致した数 ÷（一致 + 余計 + 見逃し）。</p>
+  </div>
+  <div class="twocol">
+    <p>エッジの項は、予測したノードの数も考慮して調整されます。そのため、細胞を多く出しすぎても少なすぎても下がります。discussion では「予測したノード数の変化が、LB の上下とよく連動した」という報告がありました。</p>
+    <p>分裂の項は 0.1 倍ですが、分母が小さい項です。たとえば分母が 50 なら、分裂を 1 つ正しくするだけで 0.1 ÷ 50 = <b class="num">0.002</b> 動きます（説明用の数字で、実際の分母は分かりません）。上位は 0.001 刻みで並んでいるので、この差は大きいです。</p>
+  </div>
+</div></section>
+
+<section id="submit"><div class="wrap">
+  <p class="label">04 · 提出の仕組み</p>
+  <h2>1 つの Notebook が、2 回実行される。</h2>
+  <div class="flow" role="list">
+    <div class="step" role="listitem"><span class="k">MAC</span><h3>push</h3><p>Notebook を Kaggle に上げる。</p></div>
+    <div class="step" role="listitem"><span class="k">KAGGLE · T4</span><h3>保存のための実行</h3><p>公開テスト 4 本で動かす。GPU の quota を使う。20〜40 分。</p></div>
+    <div class="step" role="listitem"><span class="k">MAC</span><h3>submit</h3><p>成功したバージョンを提出する。1 日 5 回まで。</p></div>
+    <div class="step hot" role="listitem"><span class="k">KAGGLE · 非公開</span><h3>採点のための再実行</h3><p>非公開テストで動かし直す。上限 12 時間。</p></div>
+    <div class="step" role="listitem"><span class="k">LB</span><h3>スコア</h3><p>出るまで数時間〜半日。</p></div>
+  </div>
+  <div class="callout">最初に fork した Geometric Fusion は、公開テストでも 4 時間かかっていました。学習データで後処理の設定を選び直す処理が入っていたためです。提出すると、非公開テストでの再実行が 12 時間を超えて 2 回とも失敗しました。選ばれた設定を最初から固定して検証を切ったところ、出力はまったく同じまま、実行は 35 分になりました。</div>
+</div></section>
+
+<section id="method"><div class="wrap">
+  <p class="label">05 · 今の最良手法（E006、公開 LB 0.955）</p>
+  <h2>公開の土台に、分裂のふるい分けを 1 つ足した。</h2>
+  <div class="legend">
+    <span><span class="chip pk">pilkwang</span> 公開の学習済み重みとパイプライン</span>
+    <span><span class="chip x">x138</span> 公開 Notebook の追加部分</span>
+    <span><span class="chip us">今回追加</span> 私たちが足したもの</span>
+  </div>
+  <div class="pipe">
+    <div class="stage"><span class="t">検出</span><span class="d">時間方向も見る 3D U-Net で、核の中心の heatmap を出す。2 つの seed のモデルを組み合わせ、左右反転などの 8 通りで平均する。</span><span class="chip pk">pilkwang</span></div>
+    <div class="arrow" aria-hidden="true">↓</div>
+    <div class="stage"><span class="t">座標の補正</span><span class="d">検出した中心の位置を、小さなモデル（V1284 head）で 2 µm 以内の範囲で補正する。この重みは 9/24 に公開された。</span><span class="chip x">x138</span></div>
+    <div class="arrow" aria-hidden="true">↓</div>
+    <div class="stage"><span class="t">エッジの推定</span><span class="d">node transformer が、隣のフレームのノードどうしがつながる確率を出す。前向きと後ろ向きの両方の確率を組み合わせる。</span><span class="chip pk">pilkwang</span></div>
+    <div class="arrow" aria-hidden="true">↓</div>
+    <div class="stage"><span class="t">グラフの構築</span><span class="d">ILP で全体として矛盾のない追跡を作り、動きの予測で relink する。抜けたフレームを補い、捨てた検出も読み直す。</span><span class="chip x">x138</span></div>
+    <div class="arrow" aria-hidden="true">↓</div>
+    <div class="stage us"><span class="t">分裂を足す</span><span class="d">距離や対称性の条件で分裂の候補を探し、DeepCenter で確かめる。さらに <b>DivNet で親が分裂しそうか判定し、スコア 0.3 未満の候補を捨てる。</b></span><span class="chip us">今回追加</span></div>
+    <div class="arrow" aria-hidden="true">↓</div>
+    <div class="stage"><span class="t">仕上げ</span><span class="d">短すぎる軌跡を消し、軌跡をなめらかにして CSV に書き出す。</span><span class="chip pk">pilkwang</span></div>
+  </div>
+</div></section>
+
+<section id="divnet"><div class="wrap">
+  <p class="label">06 · DivNet のふるい分け</p>
+  <h2>分裂しそうな親だけを残す。</h2>
+  <p class="lede">DivNet は、親の細胞の周り（前後 4 フレーム、16 × 32 × 32）を見て、分裂しそうかどうかを 0〜1 で出す公開モデルです。学習データの正解の分裂 151 件と、分裂しない細胞 4,423 件でスコアを出すと、下の分布になりました。スライダーで閾値を動かすと、残る数が変わります。</p>
+  <div class="ctrl">
+    <label for="thr">閾値 <b class="num" id="thrv">0.30</b></label>
+    <input id="thr" type="range" min="0" max="1" step="0.025" value="0.3">
+    <span class="small">E006 は 0.3、E007 は 0.5</span>
+  </div>
+  <div class="chart"><svg id="hist" viewBox="0 0 760 300" role="img" aria-label="DivNet スコアの分布"></svg></div>
+  <div class="readout">
+    <div><b id="keepPos">—</b><span>残る本物の分裂（151 件中）</span></div>
+    <div><b id="dropNeg">—</b><span>捨てられる、分裂しない細胞（4,423 件中）</span></div>
+    <div><b id="keptNeg">—</b><span>残ってしまう、分裂しない細胞</span></div>
+  </div>
+  <p class="small">スコアは 0.26 付近と 0.76 付近の 2 つの山に分かれています。そのため、閾値を 0.3 から 0.5 に上げても、残る数はほとんど変わりません（E006 と E007 の出力の違いは分裂 4 件だけでした）。この分布は、DivNet が学習に使った動画を大半含むデータで測ったもので、未知のデータでの性能ではありません。本番で判定するのは、パイプラインが見つけた分裂の候補で、ここで使った正解の位置ではない点にも注意してください。</p>
+</div></section>
+
+<section id="journey"><div class="wrap">
+  <p class="label">07 · 試したこと（9/23〜9/25）</p>
+  <h2>0.947 の壁から、0.955 まで。</h2>
+  <div class="chart"><svg id="journey-chart" viewBox="0 0 900 330" role="img" aria-label="提出ごとの公開 LB スコア"></svg></div>
+  <div class="legend">
+    <span><span class="dot" style="background:var(--geo)"></span>Geometric Fusion 系</span>
+    <span><span class="dot" style="background:var(--gfp)"></span>x138 系</span>
+    <span><span class="dot" style="background:var(--mag)"></span>DivNet のふるい分けあり</span>
+    <span><span class="dot" style="background:var(--amber)"></span>時間切れで失敗</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>ID</th><th>中身</th><th>系統</th><th class="num">分裂数</th><th class="num">公開 LB</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">B001</td><td>Proxy 0947 の公開 Notebook をそのまま fork</td><td><span class="tag geo">Harmonic</span></td><td class="num">—</td><td class="num mono">0.947</td></tr>
+      <tr><td class="mono">B002</td><td>Geometric Fusion をそのまま fork</td><td><span class="tag geo">Geo</span></td><td class="num">163</td><td class="num"><span class="tag fail">時間切れ</span></td></tr>
+      <tr><td class="mono">B003</td><td>x138 から、非公開だった座標補正の重みを外したもの</td><td><span class="tag">x138</span></td><td class="num">—</td><td class="num mono">0.946</td></tr>
+      <tr><td class="mono">B004</td><td>B002 の設定を固定して検証を切った短時間版（出力は同じ）</td><td><span class="tag geo">Geo</span></td><td class="num">163</td><td class="num mono">0.947</td></tr>
+      <tr><td class="mono">E002</td><td>Geo + DivNet 0.5（検証が別の設定を選んだため比較できない）</td><td><span class="tag geo">Geo</span></td><td class="num">37</td><td class="num mono">0.946</td></tr>
+      <tr><td class="mono">E003</td><td>B004 + DivNet 0.3</td><td><span class="tag geo">Geo</span></td><td class="num">71</td><td class="num mono">0.949</td></tr>
+      <tr><td class="mono">B005</td><td>x138 + 公開された座標補正の重み</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num mono">0.953</td></tr>
+      <tr class="best"><td class="mono">E006</td><td>B005 + DivNet 0.3</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono"><b>0.955</b></td></tr>
+      <tr><td class="mono">E007</td><td>B005 + DivNet 0.5</td><td><span class="tag">x138</span></td><td class="num">30</td><td class="num mono">0.954</td></tr>
+      <tr><td class="mono">E009</td><td>E006 + weak-leaf pruning（弱いつながりの終端を削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">分裂数は、公開テスト 4 本の出力に含まれる分裂（出次数 2 のノード）の数。7 月に参加したときの最高は 0.901。提出しなかった実験（E001、E004、E005、E008）は表から省いています。</p>
+</div></section>
+
+<section id="learned"><div class="wrap">
+  <p class="label">08 · わかったこと</p>
+  <h2>効いたのは、公開の重みと、分裂のふるい分け。</h2>
+  <div class="findings">
+    <div class="finding"><h3>公開 Notebook のコピーは同点になる</h3><p>0.947 に 726 チームが並んでいた。同点では提出が早い方が上位になるので、後から同じものを出しても順位は上がらない。</p></div>
+    <div class="finding"><h3>タイトルのスコアは当てにならない</h3><p>Kernel の一覧 API はスコアを返さない。スコア順の並びで見ると、「0.951」と書かれた Notebook も 0.947 より下にあった。</p></div>
+    <div class="finding"><h3>非公開の依存は、後から公開されることがある</h3><p>x138 の座標補正の重みは最初は非公開で、fork しても動かなかった。9/24 に公開され、そのまま出すだけで 0.953 になった。</p></div>
+    <div class="finding"><h3>DivNet は 2 つの系統で +0.002</h3><p>Geo（0.947 → 0.949）でも x138（0.953 → 0.955）でも同じだけ上がった。ただし、どちらも同じ公開テストでの結果で、Private での改善幅は分からない。</p></div>
+    <div class="finding"><h3>分裂を消すと、軌跡も消える</h3><p>出力を比べると、分裂を 1 つ消すと、たいてい娘の片方の軌跡ごと出力から消えていた。+0.002 は、分裂の項だけでなくエッジの項からも来ている可能性がある。</p></div>
+    <div class="finding"><h3>学習データでの CV は使えない</h3><p>公開の検出器は学習データの 199 動画すべてで学習されている。学習データで測ると in-sample になり、LB の予測に使えない。</p></div>
+  </div>
+</div></section>
+
+<section id="final"><div class="wrap">
+  <p class="label">09 · 最終提出（9/28 までに確定）</p>
+  <h2>本命と、その保険。</h2>
+  <div class="final">
+    <div class="pick"><span class="label">1 本目</span><b>E006 · 0.955</b><p>x138 + 座標補正 + DivNet 0.3。公開 LB で最も高い。</p></div>
+    <div class="pick second"><span class="label" style="color:var(--geo)">2 本目</span><b>B005 · 0.953</b><p>E006 から DivNet だけを抜いたもの。DivNet が Private で外れたときの保険になる。</p></div>
+  </div>
+  <p class="small">E003（Geometric Fusion 系、0.949）は別の系統ですが、同じ DivNet のふるい分けが入っているので、E006 と一緒に外れる危険を避けられません。外部レビューでも E006 + B005 が推奨されました。</p>
+</div></section>
+
+<footer><div class="wrap">
+  <p><b>出典と、情報の時点</b></p>
+  <ul>
+    <li>コンペ: <a href="https://www.kaggle.com/competitions/biohub-cell-tracking-during-development">biohub-cell-tracking-during-development</a>（Timeline、Code Requirements、Rules を 2026-09-25 に確認）</li>
+    <li>土台の Notebook: <a href="https://www.kaggle.com/code/anvithpothula/biohub-x138">anvithpothula/biohub-x138</a>、<a href="https://www.kaggle.com/code/amanatar/biohub-geometric-fusion">amanatar/biohub-geometric-fusion</a></li>
+    <li>重み: <a href="https://www.kaggle.com/datasets/anvithpothula/biohub-v1284-head-s075">biohub-v1284-head-s075</a>、<a href="https://www.kaggle.com/datasets/giorgosi/biohub-divnet-v2">biohub-divnet-v2</a>、pilkwang の 3 つのデータセット</li>
+    <li>実験の記録: リポジトリ <span class="mono">MurakawaTakuya/biohub-cell-tracking</span> の <span class="mono">README.md</span>、<span class="mono">runs/</span>、<span class="mono">docs/</span></li>
+    <li>順位とスコアは 2026-09-25 12:03 UTC の公開 LB。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
+  </ul>
+</div></footer>
+
+<script>
+(function(){
+  var css = getComputedStyle(document.documentElement);
+  function tok(n){ return css.getPropertyValue(n).trim(); }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- hero: nuclei drifting, occasionally dividing ---------- */
+  var cv = document.getElementById('scope'), ctx = cv.getContext('2d'), hud = document.getElementById('hud');
+  var W = cv.width, H = cv.height, R = W * 0.46, cx = W / 2, cy = H / 2;
+  var rnd = mulberry(7);
+  function mulberry(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var cells = [];
+  function spawn(x, y, vx, vy, div){ cells.push({x:x, y:y, vx:vx, vy:vy, z:rnd(), trail:[], div:div || 0}); }
+  for (var i = 0; i < 70; i++){
+    var a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * R * 0.92;
+    spawn(cx + Math.cos(a) * r, cy + Math.sin(a) * r, (rnd() - .5) * .35, (rnd() - .5) * .35);
+  }
+  var frame = 0, tick = 0;
+  function step(){
+    tick++;
+    if (tick % 8 === 0){ frame = (frame + 1) % 100; hud.textContent = 't = ' + frame + ' / 100'; }
+    for (var i = 0; i < cells.length; i++){
+      var c = cells[i];
+      c.vx += (rnd() - .5) * .04; c.vy += (rnd() - .5) * .04;
+      var dx = c.x - cx, dy = c.y - cy, d = Math.hypot(dx, dy);
+      if (d > R * 0.9){ c.vx -= dx / d * .05; c.vy -= dy / d * .05; }
+      c.vx *= .985; c.vy *= .985;
+      c.x += c.vx; c.y += c.vy;
+      if (tick % 4 === 0){ c.trail.push([c.x, c.y]); if (c.trail.length > 26) c.trail.shift(); }
+      if (c.div > 0) c.div--;
+    }
+    if (tick % 150 === 0 && cells.length < 110){
+      var p = cells[Math.floor(rnd() * cells.length)], ang = rnd() * Math.PI;
+      var ux = Math.cos(ang), uy = Math.sin(ang);
+      spawn(p.x, p.y, p.vx + ux * .9, p.vy + uy * .9, 120);
+      p.vx -= ux * .9; p.vy -= uy * .9; p.div = 120;
+    }
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = tok('--canvas-bg'); ctx.fillRect(0, 0, W, H);
+    var g = ctx.createRadialGradient(cx, cy, R * .1, cx, cy, R);
+    g.addColorStop(0, 'rgba(95,224,166,0.07)'); g.addColorStop(1, 'rgba(95,224,166,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+    var cell = tok('--canvas-cell'), div = tok('--canvas-div');
+    for (var i = 0; i < cells.length; i++){
+      var c = cells[i], col = c.div > 0 ? div : cell;
+      if (c.trail.length > 1){
+        ctx.strokeStyle = col; ctx.globalAlpha = .28; ctx.lineWidth = 1.6; ctx.beginPath();
+        ctx.moveTo(c.trail[0][0], c.trail[0][1]);
+        for (var k = 1; k < c.trail.length; k++) ctx.lineTo(c.trail[k][0], c.trail[k][1]);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = .35 + c.z * .65; ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(c.x, c.y, 5 + c.z * 5, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  if (reduce){ for (var s = 0; s < 420; s++) step(); draw(); }
+  else { (function loop(){ step(); draw(); requestAnimationFrame(loop); })(); }
+
+  /* ---------- DivNet histogram (real data from A001) ---------- */
+  var bins = [0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225,0.25,0.275,0.3,0.325,0.35,0.375,0.4,0.425,0.45,0.475,0.5,0.525,0.55,0.575,0.6,0.625,0.65,0.675,0.7,0.725,0.75,0.775,0.8,0.825,0.85,0.875,0.9,0.925,0.95,0.975,1];
+  var pos = [0,0,0,0,0,0,0,0,0,0,46,3,3,1,2,1,2,0,1,0,0,1,0,1,0,2,2,5,0,4,77,0,0,0,0,0,0,0,0,0];
+  var neg = [0,0,0,0,0,0,0,0,0,0,3835,82,39,22,12,10,10,10,10,9,8,8,11,10,8,5,15,12,30,64,213,0,0,0,0,0,0,0,0,0];
+  var NS = 'http://www.w3.org/2000/svg';
+  var PAINT = {fill:1, stroke:1};
+  function el(tag, attrs, text){
+    var e = document.createElementNS(NS, tag), st = '';
+    for (var k in attrs){
+      var v = String(attrs[k]);
+      if (PAINT[k] && v.indexOf('var(') === 0) st += k + ':' + v + ';';
+      else if (k !== 'style') e.setAttribute(k, v);
+    }
+    if (attrs.style) st += attrs.style;
+    if (st) e.setAttribute('style', st);
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  // static SVGs: move var() paint attributes into style so every browser resolves them
+  Array.prototype.forEach.call(document.querySelectorAll('svg [fill^="var("], svg [stroke^="var("]'), function(n){
+    ['fill', 'stroke'].forEach(function(a){
+      var v = n.getAttribute(a);
+      if (v && v.indexOf('var(') === 0){ n.style.setProperty(a, v); n.removeAttribute(a); }
+    });
+  });
+  var hs = document.getElementById('hist'), HX0 = 60, HX1 = 740, HY0 = 24, HY1 = 250;
+  // sqrt scale on counts so the small positive class stays visible next to 3,835 negatives
+  var ticks = [0, 10, 50, 200, 1000, 4000], maxv = 4000;
+  function yv(v){ return HY1 - Math.sqrt(v / maxv) * (HY1 - HY0); }
+  function xv(s){ return HX0 + s * (HX1 - HX0); }
+  function drawHist(thr){
+    while (hs.firstChild) hs.removeChild(hs.firstChild);
+    ticks.forEach(function(t){
+      hs.appendChild(el('line', {x1:HX0, x2:HX1, y1:yv(t), y2:yv(t), stroke:'var(--line)', 'stroke-width':1}));
+      hs.appendChild(el('text', {x:HX0 - 8, y:yv(t) + 4, 'text-anchor':'end'}, t));
+    });
+    for (var i = 0; i < 40; i++){
+      var x0 = xv(bins[i]), w = (HX1 - HX0) / 40, left = bins[i + 1] <= thr + 1e-9;
+      if (neg[i]) hs.appendChild(el('rect', {x:x0 + 1, y:yv(neg[i]), width:w / 2 - 1, height:HY1 - yv(neg[i]), fill:'var(--geo)', opacity: left ? .35 : .9}));
+      if (pos[i]) hs.appendChild(el('rect', {x:x0 + w / 2, y:yv(pos[i]), width:w / 2 - 1, height:HY1 - yv(pos[i]), fill:'var(--mag)', opacity: left ? .35 : 1}));
+    }
+    [0, .25, .5, .75, 1].forEach(function(s){ hs.appendChild(el('text', {x:xv(s), y:HY1 + 18, 'text-anchor':'middle'}, s.toFixed(2))); });
+    hs.appendChild(el('text', {x:(HX0 + HX1) / 2, y:HY1 + 40, 'text-anchor':'middle'}, 'DivNet のスコア'));
+    hs.appendChild(el('text', {x:14, y:14}, '件数（平方根の目盛り）'));
+    var tx = xv(thr);
+    hs.appendChild(el('rect', {x:HX0, y:HY0, width:tx - HX0, height:HY1 - HY0, fill:'var(--amber)', opacity:.07}));
+    hs.appendChild(el('line', {x1:tx, x2:tx, y1:HY0 - 6, y2:HY1, stroke:'var(--amber)', 'stroke-width':2, 'stroke-dasharray':'5 4'}));
+    hs.appendChild(el('text', {x:Math.min(tx + 6, HX1 - 110), y:HY0 + 4, 'class':'strong'}, '閾値 ' + thr.toFixed(2)));
+    hs.appendChild(el('rect', {x:HX1 - 190, y:HY0 + 16, width:10, height:10, fill:'var(--mag)'}));
+    hs.appendChild(el('text', {x:HX1 - 174, y:HY0 + 25}, '本物の分裂（151）'));
+    hs.appendChild(el('rect', {x:HX1 - 190, y:HY0 + 34, width:10, height:10, fill:'var(--geo)'}));
+    hs.appendChild(el('text', {x:HX1 - 174, y:HY0 + 43}, '分裂しない細胞（4,423）'));
+    var kp = 0, dn = 0, kn = 0;
+    for (var j = 0; j < 40; j++){ if (bins[j] >= thr - 1e-9){ kp += pos[j]; kn += neg[j]; } else { dn += neg[j]; } }
+    document.getElementById('keepPos').textContent = kp + ' 件（' + Math.round(kp / 151 * 100) + '%）';
+    document.getElementById('dropNeg').textContent = dn.toLocaleString() + ' 件（' + Math.round(dn / 4423 * 100) + '%）';
+    document.getElementById('keptNeg').textContent = kn.toLocaleString() + ' 件';
+    document.getElementById('thrv').textContent = thr.toFixed(2);
+  }
+  var thrEl = document.getElementById('thr');
+  thrEl.addEventListener('input', function(){ drawHist(parseFloat(thrEl.value)); });
+  drawHist(0.3);
+
+  /* ---------- journey chart ---------- */
+  var subs = [
+    {id:'B001', s:.947, c:'--geo', t:'9/23'}, {id:'B002', s:null, c:'--amber', t:'9/23'},
+    {id:'B003', s:.946, c:'--gfp', t:'9/23'}, {id:'B004', s:.947, c:'--geo', t:'9/24'},
+    {id:'E002', s:.946, c:'--geo', t:'9/24', d:1}, {id:'E003', s:.949, c:'--geo', t:'9/24', d:1},
+    {id:'B005', s:.953, c:'--gfp', t:'9/24'}, {id:'E006', s:.955, c:'--gfp', t:'9/24', d:1},
+    {id:'E007', s:.954, c:'--gfp', t:'9/25', d:1}, {id:'E009', s:.955, c:'--gfp', t:'9/25', d:1}
+  ];
+  var js = document.getElementById('journey-chart'), X0 = 64, X1 = 736, Y0 = 26, Y1 = 262, lo = .944, hi = .956;
+  function yj(v){ return Y1 - (v - lo) / (hi - lo) * (Y1 - Y0); }
+  function xj(i){ return X0 + (i + .5) * (X1 - X0) / subs.length; }
+  for (var v = lo; v <= hi + 1e-9; v += .002){
+    js.appendChild(el('line', {x1:X0, x2:X1, y1:yj(v), y2:yj(v), stroke:'var(--line)'}));
+    js.appendChild(el('text', {x:X0 - 8, y:yj(v) + 4, 'text-anchor':'end'}, v.toFixed(3)));
+  }
+  [{v:.953, t:'銀の境目（194 位）'}, {v:.947, t:'公開コピーの壁'}].forEach(function(r){
+    js.appendChild(el('line', {x1:X0, x2:X1, y1:yj(r.v), y2:yj(r.v), stroke:'var(--amber)', 'stroke-dasharray':'6 5', 'stroke-width':1.5}));
+    js.appendChild(el('text', {x:X1 + 10, y:yj(r.v) + 4, 'class':'strong'}, r.t));
+  });
+  var prev = null;
+  subs.forEach(function(s, i){
+    var x = xj(i);
+    js.appendChild(el('text', {x:x, y:Y1 + 20, 'text-anchor':'middle', 'class':'strong'}, s.id));
+    js.appendChild(el('text', {x:x, y:Y1 + 36, 'text-anchor':'middle'}, s.t));
+    if (s.s == null){
+      js.appendChild(el('text', {x:x, y:Y1 - 8, 'text-anchor':'middle', style:'fill:var(--amber);font-size:18px'}, '×'));
+      return;
+    }
+    var y = yj(s.s);
+    js.appendChild(el('circle', {cx:x, cy:y, r:s.d ? 9 : 7, fill:'var(' + s.c + ')', stroke: s.d ? 'var(--mag)' : 'none', 'stroke-width':3}));
+    js.appendChild(el('text', {x:x, y:y - 15, 'text-anchor':'middle', 'class': s.id === 'E006' ? 'strong' : ''}, s.s.toFixed(3)));
+  });
+  js.appendChild(el('text', {x:14, y:14}, '公開 LB'));
+})();
+</script>
