@@ -60,3 +60,8 @@ nb, meta = load_e006()
 append_env(nb, "E014: DivNet gate off (min_prob 0.0) + rescue 0.7, on E006.",
            {"BIOHUB_DIVNET_MIN_PROB": "0.0", "BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.7"})
 save(nb, meta, ROOT / "submit-e014-x138-rescue07-nogate", "versavice/biohub-e014-x138-rescue07-nogate", "Biohub E014 x138 Rescue07 NoGate")
+
+# E015: E013 with rescue lowered to 0.3 (= gate threshold), on E006.
+nb, meta = load_e006()
+append_env(nb, "E015: DivNet rescue 0.3 on E006.", {"BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.3"})
+save(nb, meta, ROOT / "submit-e015-x138-rescue03", "versavice/biohub-e015-x138-rescue03", "Biohub E015 x138 Rescue03")
