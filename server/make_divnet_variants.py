@@ -19,6 +19,9 @@ VARIANTS = {
     "submit-e005-divnet-rescue07": ("versavice/biohub-e005-divnet-rescue07", "Biohub E005 DivNet Rescue07",
                                     {"BIOHUB_DIVNET_MIN_PROB": "0.0", "BIOHUB_DIVNET_RANK_WEIGHT_UM": "0.0",
                                      "BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.7"}),
+    "submit-e012-geo-gate03-rescue07": ("versavice/biohub-e012-geo-gate03-rescue07", "Biohub E012 Geo Gate03 Rescue07",
+                                        {"BIOHUB_DIVNET_MIN_PROB": "0.3", "BIOHUB_DIVNET_RANK_WEIGHT_UM": "0.0",
+                                         "BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.7"}),
 }
 
 import sys
