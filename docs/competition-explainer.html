@@ -161,11 +161,11 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <h1>胚の中の細胞を、<br>1つ残らず<br>追いかける。</h1>
     <p class="lede">ゼブラフィッシュの胚を撮った 3D の顕微鏡動画から、細胞を見つけ、次のフレームのどの細胞とつながるかを決め、分裂の瞬間を見つける。そういうコンペです。このページでは、課題の中身と、私たちがここまでに試したこと、今いちばん良い手法をまとめます。</p>
     <div class="stats" aria-label="現状">
-      <div><b>61<small style="font-size:13px"> 位</small></b><span>3,914 チーム中（9/26 07:06 JST）</span></div>
-      <div><b>0.958</b><span>公開 LB の最高（E010）</span></div>
+      <div><b>75<small style="font-size:13px"> 位</small></b><span>3,924 チーム中（9/26 19:29 JST）</span></div>
+      <div><b>0.959</b><span>公開 LB の最高（E013）</span></div>
       <div><b>9/30</b><span>締切 08:59 JST</span></div>
     </div>
-    <p class="small">銀メダル圏は 195 位まで（その順位のスコアは 0.954）、金は 17 位まで（同 0.965）。数字は記載時点の観測値で、Private LB は締切後に公開されます。</p>
+    <p class="small">銀メダル圏は 195 位まで（その順位のスコアは 0.954）、金は 17 位まで（同 0.966）。数字は記載時点の観測値で、Private LB は締切後に公開されます。</p>
   </div>
   <div class="scope" aria-label="細胞の核が動き、分裂する様子のアニメーション">
     <canvas id="scope" width="720" height="720"></canvas>
@@ -248,7 +248,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
 </div></section>
 
 <section id="method"><div class="wrap">
-  <p class="label">05 · 今の最良手法（E010、公開 LB 0.958）</p>
+  <p class="label">05 · 今の最良手法（E013、公開 LB 0.959）</p>
   <h2>公開の土台に、DivNet で分裂を「捨てる」と「救う」を足した。</h2>
   <div class="legend">
     <span><span class="chip pk">pilkwang</span> 公開の学習済み重みとパイプライン</span>
@@ -264,7 +264,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <div class="arrow" aria-hidden="true">↓</div>
     <div class="stage"><span class="t">グラフの構築</span><span class="d">ILP で全体として矛盾のない追跡を作り、動きの予測で relink する。抜けたフレームを補い、捨てた検出も読み直す。</span><span class="chip x">x138</span></div>
     <div class="arrow" aria-hidden="true">↓</div>
-    <div class="stage us"><span class="t">分裂を足す</span><span class="d">距離や対称性の条件で分裂の候補を探し、DeepCenter で確かめる。さらに DivNet で親が分裂しそうか判定し、<b>スコア 0.3 未満の候補を捨てる（gate）。DeepCenter が却下した候補でも、スコア 0.7 以上なら残す（rescue）。</b></span><span class="chip us">今回追加</span></div>
+    <div class="stage us"><span class="t">分裂を足す</span><span class="d">距離や対称性の条件で分裂の候補を探し、DeepCenter で確かめる。さらに DivNet で親が分裂しそうか判定し、<b>スコア 0.3 未満の候補を捨てる（gate）。DeepCenter が却下した候補でも、スコア 0.5 以上なら残す（rescue）。</b></span><span class="chip us">今回追加</span></div>
     <div class="arrow" aria-hidden="true">↓</div>
     <div class="stage"><span class="t">仕上げ</span><span class="d">短すぎる軌跡を消し、軌跡をなめらかにして CSV に書き出す。</span><span class="chip pk">pilkwang</span></div>
   </div>
@@ -291,7 +291,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
 
 <section id="journey"><div class="wrap">
   <p class="label">07 · 試したこと（9/23〜9/26）</p>
-  <h2>0.947 の壁から、0.958 まで。</h2>
+  <h2>0.947 の壁から、0.959 まで。</h2>
   <div class="chart"><svg id="journey-chart" viewBox="0 0 900 330" role="img" aria-label="提出ごとの公開 LB スコア"></svg></div>
   <div class="legend">
     <span><span class="dot" style="background:var(--geo)"></span>Geometric Fusion 系</span>
@@ -312,11 +312,11 @@ footer ul{margin:8px 0 0;padding-left:18px}
       <tr><td class="mono">E006</td><td>B005 + DivNet gate 0.3</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
       <tr><td class="mono">E007</td><td>B005 + DivNet 0.5</td><td><span class="tag">x138</span></td><td class="num">30</td><td class="num mono">0.954</td></tr>
       <tr><td class="mono">E009</td><td>E006 + weak-leaf pruning（弱いつながりの終端を削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
-      <tr class="best"><td class="mono">E010</td><td>E006 + DivNet rescue 0.7（DeepCenter が却下した候補を救う）</td><td><span class="tag">x138</span></td><td class="num">54</td><td class="num mono"><b>0.958</b></td></tr>
+      <tr><td class="mono">E010</td><td>E006 + DivNet rescue 0.7（DeepCenter が却下した候補を救う）</td><td><span class="tag">x138</span></td><td class="num">54</td><td class="num mono">0.958</td></tr>
       <tr><td class="mono">E011</td><td>E006 + weak-leaf pruning（なめらかにした後に削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
-      <tr><td class="mono">E012</td><td>E003 + rescue 0.7（rescue が Geo 系でも効くか）</td><td><span class="tag geo">Geo</span></td><td class="num">78</td><td class="num">採点中</td></tr>
-      <tr><td class="mono">E013</td><td>E010 の rescue を 0.5 に（0.7 がたまたまではないか）</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num">採点中</td></tr>
-      <tr><td class="mono">E014</td><td>B005 + rescue 0.7 のみ（gate なし。rescue だけの効果）</td><td><span class="tag">x138</span></td><td class="num">81</td><td class="num">採点中</td></tr>
+      <tr><td class="mono">E012</td><td>E003 + rescue 0.7（rescue が Geo 系でも効くか）</td><td><span class="tag geo">Geo</span></td><td class="num">78</td><td class="num mono">0.950</td></tr>
+      <tr class="best"><td class="mono">E013</td><td>E010 の rescue を 0.5 に（0.7 がたまたまではないか）</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num mono"><b>0.959</b></td></tr>
+      <tr><td class="mono">E014</td><td>B005 + rescue 0.7 のみ（gate なし。rescue だけの効果）</td><td><span class="tag">x138</span></td><td class="num">81</td><td class="num mono">0.957</td></tr>
     </tbody>
   </table></div>
   <p class="small">分裂数は、公開テスト 4 本の出力に含まれる分裂（出次数 2 のノード）の数。7 月に参加したときの最高は 0.901。提出しなかった実験（E001、E004、E005、E008）は表から省いています。</p>
@@ -331,7 +331,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <div class="finding"><h3>非公開の依存は、後から公開されることがある</h3><p>x138 の座標補正の重みは最初は非公開で、fork しても動かなかった。9/24 に公開され、そのまま出すだけで 0.953 になった。</p></div>
     <div class="finding"><h3>DivNet は 2 つの系統で +0.002</h3><p>Geo（0.947 → 0.949）でも x138（0.953 → 0.955）でも同じだけ上がった。ただし、どちらも同じ公開テストでの結果で、Private での改善幅は分からない。</p></div>
     <div class="finding"><h3>分裂を消すと、軌跡も消える</h3><p>出力を比べると、分裂を 1 つ消すと、たいてい娘の片方の軌跡ごと出力から消えていた。+0.002 は、分裂の項だけでなくエッジの項からも来ている可能性がある。</p></div>
-    <div class="finding"><h3>rescue でさらに +0.003</h3><p>DeepCenter の却下は厳しすぎた。DivNet のスコアが高い候補を救うと 0.955 → 0.958 になった。いまは、別の系統（E012）、別の閾値（E013）、gate なし（E014）で、同じ効果が出るかを確かめている。</p></div>
+    <div class="finding"><h3>rescue でさらに +0.003</h3><p>DeepCenter の却下は厳しすぎた。DivNet のスコアが高い候補を救うと 0.955 → 0.958 になった。別の系統（E012、+0.001）、gate なし（E014、B005 より +0.004）でも効いた。閾値を 0.5 に下げると 0.959 になった（E013）。</p></div>
     <div class="finding"><h3>別の AI のレビューで、言い過ぎを直した</h3><p>Codex CLI（gpt-6-astra）に読み取り専用でレビューを頼んだ。可視の 4 本は採点対象ではないこと、時間切れ対策の仕組みに穴があることなどを指摘され、記録を直した。結果を見る前に、判断の基準を決めておくようにした。</p></div>
     <div class="finding"><h3>学習データでの CV は使えない</h3><p>公開の検出器は学習データの 199 動画すべてで学習されている。学習データで測ると in-sample になり、LB の予測に使えない。</p></div>
   </div>

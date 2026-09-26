@@ -3,11 +3,11 @@
 コンペ: <https://www.kaggle.com/competitions/biohub-cell-tracking-during-development>（コードコンペ。締切 2026-09-29）
 チーム: Mositaku（`versavice`）
 
-## 今の再開地点（2026-09-26 07:06 JST）
+## 今の再開地点（2026-09-26 19:30 JST）
 
-- 最高は **E010 = 0.958**（E006 + DivNet rescue 0.7）。**61 位 / 3,914 チーム**（銀は 195 位まで、その順位のスコアは 0.954。金は 17 位まで、同 0.965）。
+- 最高は **E013 = 0.959**（E006 + DivNet rescue 0.5）。**75 位 / 3,924 チーム**（2026-09-26 19:29 JST。銀は 195 位まで、その順位のスコアは 0.954。金は 17 位まで、同 0.966）。
 - E011（E006 + スムージング後の weak-leaf pruning）は 0.955 で、E006 と同じ。
-- 最終提出は、公開 LB の高い方を選ぶユーザーの方針により、暫定で **E010 + E006**。E012 と E013 で E010 の確実性を確かめている（判断の基準は runs に決めてある）。次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
+- 最終提出は、事前に決めた基準により **E013（56566441）+ E010（56554089）**。E012（0.950）、E014（0.957）でも rescue の効果を確かめた。次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
 - 2026-09-26 に Codex CLI（gpt-6-astra high）のレビューを受けた: [docs/codex_review_2026-09-26.md](docs/codex_review_2026-09-26.md)
 
 ## 結果の一覧
@@ -30,9 +30,9 @@
 | E009 | `versavice/biohub-e009-x138-gate03-leaf03` v1 | E006 + weak-leaf pruning 0.3（513 ノード削除） | 56540659 | 0.955 |
 | E010 | `versavice/biohub-e010-x138-rescue07` v1 | E006 + DivNet rescue 0.7（分裂 34 → 54、純粋な追加） | 56554089 | **0.958** |
 | E011 | `versavice/biohub-e011-x138-leafpost03` v1 | E006 + weak-leaf pruning 0.3（スムージングの後。E006 から 513 ノード削除のみ） | 56554092 | 0.955 |
-| E012 | `versavice/biohub-e012-geo-gate03-rescue07` v1 | E003 + DivNet rescue 0.7（分裂 71 → 78、純粋な追加） | 56566446（採点中） | — |
-| E013 | `versavice/biohub-e013-x138-rescue05` v1 | E010 の rescue を 0.5 に（分裂 54 → 62、純粋な追加） | 56566441（採点中） | — |
-| E014 | `versavice/biohub-e014-x138-rescue07-nogate` | B005 + DivNet rescue 0.7 のみ（gate なし。分裂 62 → 81） | 56567903（採点中） | — |
+| E012 | `versavice/biohub-e012-geo-gate03-rescue07` v1 | E003 + DivNet rescue 0.7（分裂 71 → 78、純粋な追加） | 56566446 | 0.950 |
+| E013 | `versavice/biohub-e013-x138-rescue05` v1 | E010 の rescue を 0.5 に（分裂 54 → 62、純粋な追加） | 56566441 | **0.959** |
+| E014 | `versavice/biohub-e014-x138-rescue07-nogate` | B005 + DivNet rescue 0.7 のみ（gate なし。分裂 62 → 81） | 56567903 | 0.957 |
 | A003 | サーバー（`server/gt_division_check.py`） | 可視の 4 動画で、予測した分裂を正解と照合 | — | 正解の分裂が 3 件しかなく、どの版も一致 0 件。判断できない |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
