@@ -161,11 +161,11 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <h1>胚の中の細胞を、<br>1つ残らず<br>追いかける。</h1>
     <p class="lede">ゼブラフィッシュの胚を撮った 3D の顕微鏡動画から、細胞を見つけ、次のフレームのどの細胞とつながるかを決め、分裂の瞬間を見つける。そういうコンペです。このページでは、課題の中身と、私たちがここまでに試したこと、今いちばん良い手法をまとめます。</p>
     <div class="stats" aria-label="現状">
-      <div><b>95<small style="font-size:13px"> 位</small></b><span>3,899 チーム中（9/25 12:03 UTC）</span></div>
-      <div><b>0.955</b><span>公開 LB の最高（E006）</span></div>
-      <div><b>9/29</b><span>締切 23:59 UTC</span></div>
+      <div><b>61<small style="font-size:13px"> 位</small></b><span>3,914 チーム中（9/26 07:06 JST）</span></div>
+      <div><b>0.958</b><span>公開 LB の最高（E010）</span></div>
+      <div><b>9/30</b><span>締切 08:59 JST</span></div>
     </div>
-    <p class="small">銀メダル圏は 194 位まで（その順位のスコアは 0.953）。数字は記載時点の観測値で、Private LB は締切後に公開されます。</p>
+    <p class="small">銀メダル圏は 195 位まで（その順位のスコアは 0.954）、金は 17 位まで（同 0.965）。数字は記載時点の観測値で、Private LB は締切後に公開されます。</p>
   </div>
   <div class="scope" aria-label="細胞の核が動き、分裂する様子のアニメーション">
     <canvas id="scope" width="720" height="720"></canvas>
@@ -248,8 +248,8 @@ footer ul{margin:8px 0 0;padding-left:18px}
 </div></section>
 
 <section id="method"><div class="wrap">
-  <p class="label">05 · 今の最良手法（E006、公開 LB 0.955）</p>
-  <h2>公開の土台に、分裂のふるい分けを 1 つ足した。</h2>
+  <p class="label">05 · 今の最良手法（E010、公開 LB 0.958）</p>
+  <h2>公開の土台に、DivNet で分裂を「捨てる」と「救う」を足した。</h2>
   <div class="legend">
     <span><span class="chip pk">pilkwang</span> 公開の学習済み重みとパイプライン</span>
     <span><span class="chip x">x138</span> 公開 Notebook の追加部分</span>
@@ -264,7 +264,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <div class="arrow" aria-hidden="true">↓</div>
     <div class="stage"><span class="t">グラフの構築</span><span class="d">ILP で全体として矛盾のない追跡を作り、動きの予測で relink する。抜けたフレームを補い、捨てた検出も読み直す。</span><span class="chip x">x138</span></div>
     <div class="arrow" aria-hidden="true">↓</div>
-    <div class="stage us"><span class="t">分裂を足す</span><span class="d">距離や対称性の条件で分裂の候補を探し、DeepCenter で確かめる。さらに <b>DivNet で親が分裂しそうか判定し、スコア 0.3 未満の候補を捨てる。</b></span><span class="chip us">今回追加</span></div>
+    <div class="stage us"><span class="t">分裂を足す</span><span class="d">距離や対称性の条件で分裂の候補を探し、DeepCenter で確かめる。さらに DivNet で親が分裂しそうか判定し、<b>スコア 0.3 未満の候補を捨てる（gate）。DeepCenter が却下した候補でも、スコア 0.7 以上なら残す（rescue）。</b></span><span class="chip us">今回追加</span></div>
     <div class="arrow" aria-hidden="true">↓</div>
     <div class="stage"><span class="t">仕上げ</span><span class="d">短すぎる軌跡を消し、軌跡をなめらかにして CSV に書き出す。</span><span class="chip pk">pilkwang</span></div>
   </div>
@@ -272,12 +272,12 @@ footer ul{margin:8px 0 0;padding-left:18px}
 
 <section id="divnet"><div class="wrap">
   <p class="label">06 · DivNet のふるい分け</p>
-  <h2>分裂しそうな親だけを残す。</h2>
+  <h2>低いスコアは捨て、高いスコアは救う。</h2>
   <p class="lede">DivNet は、親の細胞の周り（前後 4 フレーム、16 × 32 × 32）を見て、分裂しそうかどうかを 0〜1 で出す公開モデルです。学習データの正解の分裂 151 件と、分裂しない細胞 4,423 件でスコアを出すと、下の分布になりました。スライダーで閾値を動かすと、残る数が変わります。</p>
   <div class="ctrl">
     <label for="thr">閾値 <b class="num" id="thrv">0.30</b></label>
     <input id="thr" type="range" min="0" max="1" step="0.025" value="0.3">
-    <span class="small">E006 は 0.3、E007 は 0.5</span>
+    <span class="small">gate: E006 は 0.3、E007 は 0.5 ／ rescue: E010 は 0.7、E013 は 0.5</span>
   </div>
   <div class="chart"><svg id="hist" viewBox="0 0 760 300" role="img" aria-label="DivNet スコアの分布"></svg></div>
   <div class="readout">
@@ -286,11 +286,12 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <div><b id="keptNeg">—</b><span>残ってしまう、分裂しない細胞</span></div>
   </div>
   <p class="small">スコアは 0.26 付近と 0.76 付近の 2 つの山に分かれています。そのため、閾値を 0.3 から 0.5 に上げても、残る数はほとんど変わりません（E006 と E007 の出力の違いは分裂 4 件だけでした）。この分布は、DivNet が学習に使った動画を大半含むデータで測ったもので、未知のデータでの性能ではありません。本番で判定するのは、パイプラインが見つけた分裂の候補で、ここで使った正解の位置ではない点にも注意してください。</p>
+  <div class="callout">rescue は、スコアの高い側の山を使います。公開テスト 4 本では、DeepCenter が却下した候補 371 件のうち 31 件が 0.7 以上で救われ、分裂が 34 件から 54 件に増えました（E010）。もともとあった 34 件はすべて残りました。ただし、この 4 本は公開 LB の採点対象ではありません。LB の +0.003 がどの変化から来たのかは分かりません。</div>
 </div></section>
 
 <section id="journey"><div class="wrap">
-  <p class="label">07 · 試したこと（9/23〜9/25）</p>
-  <h2>0.947 の壁から、0.955 まで。</h2>
+  <p class="label">07 · 試したこと（9/23〜9/26）</p>
+  <h2>0.947 の壁から、0.958 まで。</h2>
   <div class="chart"><svg id="journey-chart" viewBox="0 0 900 330" role="img" aria-label="提出ごとの公開 LB スコア"></svg></div>
   <div class="legend">
     <span><span class="dot" style="background:var(--geo)"></span>Geometric Fusion 系</span>
@@ -308,9 +309,14 @@ footer ul{margin:8px 0 0;padding-left:18px}
       <tr><td class="mono">E002</td><td>Geo + DivNet 0.5（検証が別の設定を選んだため比較できない）</td><td><span class="tag geo">Geo</span></td><td class="num">37</td><td class="num mono">0.946</td></tr>
       <tr><td class="mono">E003</td><td>B004 + DivNet 0.3</td><td><span class="tag geo">Geo</span></td><td class="num">71</td><td class="num mono">0.949</td></tr>
       <tr><td class="mono">B005</td><td>x138 + 公開された座標補正の重み</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num mono">0.953</td></tr>
-      <tr class="best"><td class="mono">E006</td><td>B005 + DivNet 0.3</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono"><b>0.955</b></td></tr>
+      <tr><td class="mono">E006</td><td>B005 + DivNet gate 0.3</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
       <tr><td class="mono">E007</td><td>B005 + DivNet 0.5</td><td><span class="tag">x138</span></td><td class="num">30</td><td class="num mono">0.954</td></tr>
       <tr><td class="mono">E009</td><td>E006 + weak-leaf pruning（弱いつながりの終端を削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
+      <tr class="best"><td class="mono">E010</td><td>E006 + DivNet rescue 0.7（DeepCenter が却下した候補を救う）</td><td><span class="tag">x138</span></td><td class="num">54</td><td class="num mono"><b>0.958</b></td></tr>
+      <tr><td class="mono">E011</td><td>E006 + weak-leaf pruning（なめらかにした後に削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
+      <tr><td class="mono">E012</td><td>E003 + rescue 0.7（rescue が Geo 系でも効くか）</td><td><span class="tag geo">Geo</span></td><td class="num">78</td><td class="num">採点中</td></tr>
+      <tr><td class="mono">E013</td><td>E010 の rescue を 0.5 に（0.7 がたまたまではないか）</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num">採点中</td></tr>
+      <tr><td class="mono">E014</td><td>B005 + rescue 0.7 のみ（gate なし。rescue だけの効果）</td><td><span class="tag">x138</span></td><td class="num">—</td><td class="num">実行中</td></tr>
     </tbody>
   </table></div>
   <p class="small">分裂数は、公開テスト 4 本の出力に含まれる分裂（出次数 2 のノード）の数。7 月に参加したときの最高は 0.901。提出しなかった実験（E001、E004、E005、E008）は表から省いています。</p>
@@ -318,25 +324,27 @@ footer ul{margin:8px 0 0;padding-left:18px}
 
 <section id="learned"><div class="wrap">
   <p class="label">08 · わかったこと</p>
-  <h2>効いたのは、公開の重みと、分裂のふるい分け。</h2>
+  <h2>効いたのは、公開の重みと、DivNet の「捨てる」「救う」。</h2>
   <div class="findings">
     <div class="finding"><h3>公開 Notebook のコピーは同点になる</h3><p>0.947 に 726 チームが並んでいた。同点では提出が早い方が上位になるので、後から同じものを出しても順位は上がらない。</p></div>
     <div class="finding"><h3>タイトルのスコアは当てにならない</h3><p>Kernel の一覧 API はスコアを返さない。スコア順の並びで見ると、「0.951」と書かれた Notebook も 0.947 より下にあった。</p></div>
     <div class="finding"><h3>非公開の依存は、後から公開されることがある</h3><p>x138 の座標補正の重みは最初は非公開で、fork しても動かなかった。9/24 に公開され、そのまま出すだけで 0.953 になった。</p></div>
     <div class="finding"><h3>DivNet は 2 つの系統で +0.002</h3><p>Geo（0.947 → 0.949）でも x138（0.953 → 0.955）でも同じだけ上がった。ただし、どちらも同じ公開テストでの結果で、Private での改善幅は分からない。</p></div>
     <div class="finding"><h3>分裂を消すと、軌跡も消える</h3><p>出力を比べると、分裂を 1 つ消すと、たいてい娘の片方の軌跡ごと出力から消えていた。+0.002 は、分裂の項だけでなくエッジの項からも来ている可能性がある。</p></div>
+    <div class="finding"><h3>rescue でさらに +0.003</h3><p>DeepCenter の却下は厳しすぎた。DivNet のスコアが高い候補を救うと 0.955 → 0.958 になった。いまは、別の系統（E012）、別の閾値（E013）、gate なし（E014）で、同じ効果が出るかを確かめている。</p></div>
+    <div class="finding"><h3>別の AI のレビューで、言い過ぎを直した</h3><p>Codex CLI（gpt-6-astra）に読み取り専用でレビューを頼んだ。可視の 4 本は採点対象ではないこと、時間切れ対策の仕組みに穴があることなどを指摘され、記録を直した。結果を見る前に、判断の基準を決めておくようにした。</p></div>
     <div class="finding"><h3>学習データでの CV は使えない</h3><p>公開の検出器は学習データの 199 動画すべてで学習されている。学習データで測ると in-sample になり、LB の予測に使えない。</p></div>
   </div>
 </div></section>
 
 <section id="final"><div class="wrap">
   <p class="label">09 · 最終提出（9/28 までに確定）</p>
-  <h2>本命と、その保険。</h2>
+  <h2>公開 LB の高い 2 本。</h2>
   <div class="final">
-    <div class="pick"><span class="label">1 本目</span><b>E006 · 0.955</b><p>x138 + 座標補正 + DivNet 0.3。公開 LB で最も高い。</p></div>
-    <div class="pick second"><span class="label" style="color:var(--geo)">2 本目</span><b>B005 · 0.953</b><p>E006 から DivNet だけを抜いたもの。DivNet が Private で外れたときの保険になる。</p></div>
+    <div class="pick"><span class="label">1 本目</span><b>E010 · 0.958</b><p>x138 + 座標補正 + DivNet gate 0.3 + rescue 0.7。公開 LB で最も高い。</p></div>
+    <div class="pick second"><span class="label" style="color:var(--geo)">2 本目（暫定）</span><b>E006 · 0.955</b><p>E010 から rescue を抜いたもの。rescue が Private で外れたときの保険になる。</p></div>
   </div>
-  <p class="small">E003（Geometric Fusion 系、0.949）は別の系統ですが、同じ DivNet のふるい分けが入っているので、E006 と一緒に外れる危険を避けられません。外部レビューでも E006 + B005 が推奨されました。</p>
+  <p class="small">以前は、DivNet 全体の保険として B005（0.953）を 2 本目にする予定でした。公開 LB の高い方を選ぶ方針に変え、E006 にしました。E013 や E014 が E006 を上回れば、2 本目はそちらに入れ替えます（判断の基準は runs/E013.md、runs/E014.md に、結果を見る前に決めてあります）。</p>
 </div></section>
 
 <footer><div class="wrap">
@@ -346,7 +354,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <li>土台の Notebook: <a href="https://www.kaggle.com/code/anvithpothula/biohub-x138">anvithpothula/biohub-x138</a>、<a href="https://www.kaggle.com/code/amanatar/biohub-geometric-fusion">amanatar/biohub-geometric-fusion</a></li>
     <li>重み: <a href="https://www.kaggle.com/datasets/anvithpothula/biohub-v1284-head-s075">biohub-v1284-head-s075</a>、<a href="https://www.kaggle.com/datasets/giorgosi/biohub-divnet-v2">biohub-divnet-v2</a>、pilkwang の 3 つのデータセット</li>
     <li>実験の記録: リポジトリ <span class="mono">MurakawaTakuya/biohub-cell-tracking</span> の <span class="mono">README.md</span>、<span class="mono">runs/</span>、<span class="mono">docs/</span></li>
-    <li>順位とスコアは 2026-09-25 12:03 UTC の公開 LB。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
+    <li>順位とスコアは 2026-09-26 07:06 JST の公開 LB。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
   </ul>
 </div></footer>
 
@@ -480,16 +488,18 @@ footer ul{margin:8px 0 0;padding-left:18px}
     {id:'B003', s:.946, c:'--gfp', t:'9/23'}, {id:'B004', s:.947, c:'--geo', t:'9/24'},
     {id:'E002', s:.946, c:'--geo', t:'9/24', d:1}, {id:'E003', s:.949, c:'--geo', t:'9/24', d:1},
     {id:'B005', s:.953, c:'--gfp', t:'9/24'}, {id:'E006', s:.955, c:'--gfp', t:'9/24', d:1},
-    {id:'E007', s:.954, c:'--gfp', t:'9/25', d:1}, {id:'E009', s:.955, c:'--gfp', t:'9/25', d:1}
+    {id:'E007', s:.954, c:'--gfp', t:'9/25', d:1}, {id:'E009', s:.955, c:'--gfp', t:'9/25', d:1},
+    {id:'E010', s:.958, c:'--gfp', t:'9/25', d:1}, {id:'E011', s:.955, c:'--gfp', t:'9/25', d:1},
+    {id:'E012', s:'wait', c:'--geo', t:'9/26', d:1}, {id:'E013', s:'wait', c:'--gfp', t:'9/26', d:1}
   ];
-  var js = document.getElementById('journey-chart'), X0 = 64, X1 = 736, Y0 = 26, Y1 = 262, lo = .944, hi = .956;
+  var js = document.getElementById('journey-chart'), X0 = 64, X1 = 736, Y0 = 26, Y1 = 262, lo = .944, hi = .960;
   function yj(v){ return Y1 - (v - lo) / (hi - lo) * (Y1 - Y0); }
   function xj(i){ return X0 + (i + .5) * (X1 - X0) / subs.length; }
   for (var v = lo; v <= hi + 1e-9; v += .002){
     js.appendChild(el('line', {x1:X0, x2:X1, y1:yj(v), y2:yj(v), stroke:'var(--line)'}));
     js.appendChild(el('text', {x:X0 - 8, y:yj(v) + 4, 'text-anchor':'end'}, v.toFixed(3)));
   }
-  [{v:.953, t:'銀の境目（194 位）'}, {v:.947, t:'公開コピーの壁'}].forEach(function(r){
+  [{v:.954, t:'銀の境目（195 位）'}, {v:.947, t:'公開コピーの壁'}].forEach(function(r){
     js.appendChild(el('line', {x1:X0, x2:X1, y1:yj(r.v), y2:yj(r.v), stroke:'var(--amber)', 'stroke-dasharray':'6 5', 'stroke-width':1.5}));
     js.appendChild(el('text', {x:X1 + 10, y:yj(r.v) + 4, 'class':'strong'}, r.t));
   });
@@ -502,9 +512,13 @@ footer ul{margin:8px 0 0;padding-left:18px}
       js.appendChild(el('text', {x:x, y:Y1 - 8, 'text-anchor':'middle', style:'fill:var(--amber);font-size:18px'}, '×'));
       return;
     }
+    if (s.s === 'wait'){
+      js.appendChild(el('text', {x:x, y:Y1 - 8, 'text-anchor':'middle', style:'fill:var(--muted);font-size:12px'}, '採点中'));
+      return;
+    }
     var y = yj(s.s);
     js.appendChild(el('circle', {cx:x, cy:y, r:s.d ? 9 : 7, fill:'var(' + s.c + ')', stroke: s.d ? 'var(--mag)' : 'none', 'stroke-width':3}));
-    js.appendChild(el('text', {x:x, y:y - 15, 'text-anchor':'middle', 'class': s.id === 'E006' ? 'strong' : ''}, s.s.toFixed(3)));
+    js.appendChild(el('text', {x:x, y:y - 15, 'text-anchor':'middle', 'class': s.id === 'E010' ? 'strong' : ''}, s.s.toFixed(3)));
   });
   js.appendChild(el('text', {x:14, y:14}, '公開 LB'));
 })();
