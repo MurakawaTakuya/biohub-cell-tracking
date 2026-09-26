@@ -53,3 +53,10 @@ cell = cell.replace(DEF, '\nLEAF_PRUNE_MIN_EDGE_PROB = float(os.environ.get("BIO
 nb["cells"][5]["source"] = cell.splitlines(keepends=True)
 append_env(nb, "E011: weak-leaf pruning 0.3 after smoothing, on E006.", {"BIOHUB_LEAF_PRUNE_MIN_EDGE_PROB": "0.3"})
 save(nb, meta, ROOT / "submit-e011-x138-leafpost03", "versavice/biohub-e011-x138-leafpost03", "Biohub E011 x138 LeafPost03")
+
+# E014: gate off (min_prob 0.0, every parent accepted) + rescue 0.7, on E006 = B005 + rescue 0.7 only.
+# BIOHUB_DIVNET_GATE must stay "1" because divnet_rescue_parent is disabled when the gate flag is off.
+nb, meta = load_e006()
+append_env(nb, "E014: DivNet gate off (min_prob 0.0) + rescue 0.7, on E006.",
+           {"BIOHUB_DIVNET_MIN_PROB": "0.0", "BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.7"})
+save(nb, meta, ROOT / "submit-e014-x138-rescue07-nogate", "versavice/biohub-e014-x138-rescue07-nogate", "Biohub E014 x138 Rescue07 NoGate")
