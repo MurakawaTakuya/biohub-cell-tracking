@@ -331,7 +331,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <div class="finding"><h3>非公開の依存は、後から公開されることがある</h3><p>x138 の座標補正の重みは最初は非公開で、fork しても動かなかった。9/24 に公開され、そのまま出すだけで 0.953 になった。</p></div>
     <div class="finding"><h3>DivNet は 2 つの系統で +0.002</h3><p>Geo（0.947 → 0.949）でも x138（0.953 → 0.955）でも同じだけ上がった。ただし、どちらも同じ公開テストでの結果で、Private での改善幅は分からない。</p></div>
     <div class="finding"><h3>分裂を消すと、軌跡も消える</h3><p>出力を比べると、分裂を 1 つ消すと、たいてい娘の片方の軌跡ごと出力から消えていた。+0.002 は、分裂の項だけでなくエッジの項からも来ている可能性がある。</p></div>
-    <div class="finding"><h3>rescue でさらに +0.003</h3><p>DeepCenter の却下は厳しすぎた。DivNet のスコアが高い候補を救うと 0.955 → 0.958 になった。別の系統（E012、+0.001）、gate なし（E014、B005 より +0.004）でも効いた。閾値を 0.5 に下げると 0.959 になった（E013）。</p></div>
+    <div class="finding"><h3>rescue でさらに +0.003〜0.004</h3><p>DeepCenter の却下は厳しすぎた。DivNet のスコアが高い候補を救うと 0.955 → 0.958 になった。別の系統（E012、+0.001）、gate なし（E014、B005 より +0.004）でも効いた。閾値を 0.5 に下げると 0.959 になった（E013）。</p></div>
     <div class="finding"><h3>別の AI のレビューで、言い過ぎを直した</h3><p>Codex CLI（gpt-6-astra）に読み取り専用でレビューを頼んだ。可視の 4 本は採点対象ではないこと、時間切れ対策の仕組みに穴があることなどを指摘され、記録を直した。結果を見る前に、判断の基準を決めておくようにした。</p></div>
     <div class="finding"><h3>学習データでの CV は使えない</h3><p>公開の検出器は学習データの 199 動画すべてで学習されている。学習データで測ると in-sample になり、LB の予測に使えない。</p></div>
   </div>
@@ -341,10 +341,10 @@ footer ul{margin:8px 0 0;padding-left:18px}
   <p class="label">09 · 最終提出（9/28 までに確定）</p>
   <h2>公開 LB の高い 2 本。</h2>
   <div class="final">
-    <div class="pick"><span class="label">1 本目</span><b>E010 · 0.958</b><p>x138 + 座標補正 + DivNet gate 0.3 + rescue 0.7。公開 LB で最も高い。</p></div>
-    <div class="pick second"><span class="label" style="color:var(--geo)">2 本目（暫定）</span><b>E006 · 0.955</b><p>E010 から rescue を抜いたもの。rescue が Private で外れたときの保険になる。</p></div>
+    <div class="pick"><span class="label">1 本目</span><b>E013 · 0.959</b><p>x138 + 座標補正 + DivNet gate 0.3 + rescue 0.5。公開 LB で最も高い。</p></div>
+    <div class="pick second"><span class="label" style="color:var(--geo)">2 本目</span><b>E010 · 0.958</b><p>rescue の閾値を 0.7 にしたもの。救う数が少ない分、控えめな版になる。</p></div>
   </div>
-  <p class="small">以前は、DivNet 全体の保険として B005（0.953）を 2 本目にする予定でした。公開 LB の高い方を選ぶ方針に変え、E006 にしました。E013 や E014 が E006 を上回れば、2 本目はそちらに入れ替えます（判断の基準は runs/E013.md、runs/E014.md に、結果を見る前に決めてあります）。</p>
+  <p class="small">以前は、DivNet 全体の保険として B005（0.953）を 2 本目にする予定でした。公開 LB の高い方を選ぶ方針に変え、E006 にしました。結果を見る前に決めた基準（runs/E013.md）に従い、E013 が 0.959 になったので、E013 + E010 にしました。rescue が Private で外れた場合は 2 本とも下がりますが、rescue は 3 つの比較（E012、E013、E014）で一貫して効いていました。</p>
 </div></section>
 
 <footer><div class="wrap">
@@ -354,7 +354,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <li>土台の Notebook: <a href="https://www.kaggle.com/code/anvithpothula/biohub-x138">anvithpothula/biohub-x138</a>、<a href="https://www.kaggle.com/code/amanatar/biohub-geometric-fusion">amanatar/biohub-geometric-fusion</a></li>
     <li>重み: <a href="https://www.kaggle.com/datasets/anvithpothula/biohub-v1284-head-s075">biohub-v1284-head-s075</a>、<a href="https://www.kaggle.com/datasets/giorgosi/biohub-divnet-v2">biohub-divnet-v2</a>、pilkwang の 3 つのデータセット</li>
     <li>実験の記録: リポジトリ <span class="mono">MurakawaTakuya/biohub-cell-tracking</span> の <span class="mono">README.md</span>、<span class="mono">runs/</span>、<span class="mono">docs/</span></li>
-    <li>順位とスコアは 2026-09-26 07:06 JST の公開 LB。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
+    <li>順位とスコアは 2026-09-26 19:29 JST の公開 LB。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
   </ul>
 </div></footer>
 
@@ -490,7 +490,8 @@ footer ul{margin:8px 0 0;padding-left:18px}
     {id:'B005', s:.953, c:'--gfp', t:'9/24'}, {id:'E006', s:.955, c:'--gfp', t:'9/24', d:1},
     {id:'E007', s:.954, c:'--gfp', t:'9/25', d:1}, {id:'E009', s:.955, c:'--gfp', t:'9/25', d:1},
     {id:'E010', s:.958, c:'--gfp', t:'9/25', d:1}, {id:'E011', s:.955, c:'--gfp', t:'9/25', d:1},
-    {id:'E012', s:'wait', c:'--geo', t:'9/26', d:1}, {id:'E013', s:'wait', c:'--gfp', t:'9/26', d:1}
+    {id:'E012', s:.950, c:'--geo', t:'9/26', d:1}, {id:'E013', s:.959, c:'--gfp', t:'9/26', d:1},
+    {id:'E014', s:.957, c:'--gfp', t:'9/26', d:1}
   ];
   var js = document.getElementById('journey-chart'), X0 = 64, X1 = 736, Y0 = 26, Y1 = 262, lo = .944, hi = .960;
   function yj(v){ return Y1 - (v - lo) / (hi - lo) * (Y1 - Y0); }
@@ -518,7 +519,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     }
     var y = yj(s.s);
     js.appendChild(el('circle', {cx:x, cy:y, r:s.d ? 9 : 7, fill:'var(' + s.c + ')', stroke: s.d ? 'var(--mag)' : 'none', 'stroke-width':3}));
-    js.appendChild(el('text', {x:x, y:y - 15, 'text-anchor':'middle', 'class': s.id === 'E010' ? 'strong' : ''}, s.s.toFixed(3)));
+    js.appendChild(el('text', {x:x, y:y - 15, 'text-anchor':'middle', 'class': s.id === 'E013' ? 'strong' : ''}, s.s.toFixed(3)));
   });
   js.appendChild(el('text', {x:14, y:14}, '公開 LB'));
 })();
