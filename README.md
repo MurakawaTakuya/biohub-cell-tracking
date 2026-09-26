@@ -33,7 +33,7 @@
 | E012 | `versavice/biohub-e012-geo-gate03-rescue07` v1 | E003 + DivNet rescue 0.7（分裂 71 → 78、純粋な追加） | 56566446 | 0.950 |
 | E013 | `versavice/biohub-e013-x138-rescue05` v1 | E010 の rescue を 0.5 に（分裂 54 → 62、純粋な追加） | 56566441 | **0.959** |
 | E014 | `versavice/biohub-e014-x138-rescue07-nogate` | B005 + DivNet rescue 0.7 のみ（gate なし。分裂 62 → 81） | 56567903 | 0.957 |
-| E015 | `versavice/biohub-e015-x138-rescue03` | E013 の rescue を 0.3 に（分裂 62 → 64、純粋な追加） | 実行済み・提出していない | — |
+| E015 | `versavice/biohub-e015-x138-rescue03` | E013 の rescue を 0.3 に（分裂 62 → 64、純粋な追加） | 56579132（採点中） | — |
 | A003 | サーバー（`server/gt_division_check.py`） | 可視の 4 動画で、予測した分裂を正解と照合 | — | 正解の分裂が 3 件しかなく、どの版も一致 0 件。判断できない |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
