@@ -66,14 +66,3 @@ nb, meta = load_e006()
 append_env(nb, "E015: DivNet rescue 0.3 on E006.", {"BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.3"})
 save(nb, meta, ROOT / "submit-e015-x138-rescue03", "versavice/biohub-e015-x138-rescue03", "Biohub E015 x138 Rescue03")
 
-# E016 / E017: E013 (rescue 0.5) + one safe-division geometry change each.
-for tag, header, env, kid, title in [
-    ("e016-x138-r05-diverge125", "E016: E013 + safe-div divergence 2.25 -> 1.25 um.",
-     {"BIOHUB_SAFE_DIV_DIVERGE_UM": "1.25"}, "versavice/biohub-e016-x138-r05-diverge125", "Biohub E016 x138 R05 Diverge125"),
-    ("e017-x138-r05-nomutualnn", "E017: E013 + safe-div mutual-NN requirement off.",
-     {"BIOHUB_SAFE_DIV_REQUIRE_MUTUAL_NN": "0"}, "versavice/biohub-e017-x138-r05-nomutualnn", "Biohub E017 x138 R05 NoMutualNN"),
-]:
-    nb, meta = load_e006()
-    append_env(nb, "E013: DivNet rescue 0.5 on E006.", {"BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.5"})
-    append_env(nb, header, env)
-    save(nb, meta, ROOT / f"submit-{tag}", kid, title)
