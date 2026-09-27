@@ -63,14 +63,15 @@ VARIANTS = [
      {"BIOHUB_DIVNET_MIN_PROB": "0.5", "BIOHUB_SAFE_DIV_DIVERGE_UM": "1.25"}, "Biohub E019 x138 R05 Gate05 Diverge125"),
 ]
 
-for tag, header, env, title in VARIANTS:
-    nb = json.loads((E006 / "notebook.ipynb").read_text())
-    meta = json.loads((E006 / "kernel-metadata.json").read_text())
-    nb["cells"][5]["source"] = add_diag("".join(nb["cells"][5]["source"])).splitlines(keepends=True)
-    append_env(nb, "E013: DivNet rescue 0.5 on E006.", {"BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.5"})
-    append_env(nb, header, env)
-    out = ROOT / f"submit-{tag}"
-    out.mkdir(exist_ok=True)
-    (out / "notebook.ipynb").write_text(json.dumps(nb, indent=1))
-    (out / "kernel-metadata.json").write_text(json.dumps(dict(meta, id=f"versavice/biohub-{tag}", title=title), indent=2))
-    print("wrote", out)
+if __name__ == "__main__":
+    for tag, header, env, title in VARIANTS:
+        nb = json.loads((E006 / "notebook.ipynb").read_text())
+        meta = json.loads((E006 / "kernel-metadata.json").read_text())
+        nb["cells"][5]["source"] = add_diag("".join(nb["cells"][5]["source"])).splitlines(keepends=True)
+        append_env(nb, "E013: DivNet rescue 0.5 on E006.", {"BIOHUB_DIVNET_RESCUE_MIN_PROB": "0.5"})
+        append_env(nb, header, env)
+        out = ROOT / f"submit-{tag}"
+        out.mkdir(exist_ok=True)
+        (out / "notebook.ipynb").write_text(json.dumps(nb, indent=1))
+        (out / "kernel-metadata.json").write_text(json.dumps(dict(meta, id=f"versavice/biohub-{tag}", title=title), indent=2))
+        print("wrote", out)
