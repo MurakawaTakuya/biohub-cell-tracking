@@ -39,10 +39,10 @@
 | E018 | `versavice/biohub-e018-x138-r05-gate05` | E013 + gate 0.5 | 56596038（採点中） | — |
 | E019 | `versavice/biohub-e019-x138-r05-gate05-diverge125` | E013 + gate 0.5 + divergence 1.25 µm | 56596034（採点中） | — |
 | E020 | `versavice/biohub-e020-x138-r07-diverge125` | E016 + rescue 0.7（9/28 の条件付きの候補） | 実行済み・提出していない | — |
-| E021 | `versavice/biohub-e021-x138-r07-gate05-diverge125` | E019 + rescue 0.7（9/28 の条件付きの候補） | 準備済み | — |
+| E021 | `versavice/biohub-e021-x138-r07-gate05-diverge125` | E019 + rescue 0.7（9/28 の条件付きの候補） | 実行済み・提出していない | — |
 | E022 | `versavice/biohub-e022-x138-r05-diverge175` | E013 + divergence 1.75 µm（9/28 の条件付きの候補） | 実行済み・提出していない | — |
 | E023 | `versavice/biohub-e023-x138-r05-gate05-diverge175` | E018 + divergence 1.75 µm（9/28 の条件付きの候補） | 準備済み | — |
-| E024 | `versavice/biohub-e024-x138-r05-nnfallback` | E013 + 最近傍の候補が失格したときだけ 2 番目を試す（9/28 の条件付きの候補） | 準備済み | — |
+| E024 | `versavice/biohub-e024-x138-r05-nnfallback` | E013 + 最近傍の候補が失格したときだけ 2 番目を試す（9/28 の条件付きの候補） | 実行済み・提出していない | — |
 | A003 | サーバー（`server/gt_division_check.py`） | 可視の 4 動画で、予測した分裂を正解と照合 | — | 正解の分裂が 3 件しかなく、どの版も一致 0 件。判断できない |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
