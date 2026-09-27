@@ -3,11 +3,11 @@
 コンペ: <https://www.kaggle.com/competitions/biohub-cell-tracking-during-development>（コードコンペ。締切 2026-09-29）
 チーム: Mositaku（`versavice`）
 
-## 今の再開地点（2026-09-27 09:40 JST）
+## 今の再開地点（2026-09-27 19:35 JST）
 
-- 最高は **E013 = 0.959**（E006 + DivNet rescue 0.5）。**82 位 / 3,938 チーム**（2026-09-27 09:40 JST。銀は 195 位まで、その順位のスコアは 0.955。金は 17 位まで、同 0.966）。
+- 最高は **E013 = 0.959**（E006 + DivNet rescue 0.5）。**97 位 / 3,948 チーム**（2026-09-27 19:33 JST。銀は 195 位まで、その順位のスコアは 0.955。金は 17 位まで、同 0.967）。
 - E011（E006 + スムージング後の weak-leaf pruning）は 0.955 で、E006 と同じ。
-- 最終提出は、事前に決めた基準により **E013（56566441）+ E010（56554089）**。E012（0.950）、E014（0.957）でも rescue の効果を確かめた。E015（rescue 0.3）は 0.959 で E013 と同点なので、変えない。次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
+- 最終提出は、事前に決めた基準により **E013（56566441）+ E010（56554089）**。E012（0.950）、E014（0.957）でも rescue の効果を確かめた。E015（rescue 0.3）は 0.959 で E013 と同点なので、変えない。9/27 の 2×2 の比較（E016〜E019）は、divergence の緩和も gate 0.5 も下がり、E017（最近傍の制限なし）は同点だった。統一ルールにより、最終提出は変えない。次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
 - 2026-09-26 に Codex CLI（gpt-6-astra high）のレビューを受けた: [docs/codex_review_2026-09-26.md](docs/codex_review_2026-09-26.md)
 
 ## 結果の一覧
@@ -34,10 +34,10 @@
 | E013 | `versavice/biohub-e013-x138-rescue05` v1 | E010 の rescue を 0.5 に（分裂 54 → 62、純粋な追加） | 56566441 | **0.959** |
 | E014 | `versavice/biohub-e014-x138-rescue07-nogate` | B005 + DivNet rescue 0.7 のみ（gate なし。分裂 62 → 81） | 56567903 | 0.957 |
 | E015 | `versavice/biohub-e015-x138-rescue03` | E013 の rescue を 0.3 に（分裂 62 → 64、純粋な追加） | 56579132 | 0.959 | — |
-| E016 | `versavice/biohub-e016-x138-r05-diverge125` | E013 + divergence 1.25 µm | 56596031（採点中） | — |
-| E017 | `versavice/biohub-e017-x138-r05-nomutualnn` | E013 + 最近傍の制限なし | 56596041（採点中） | — |
-| E018 | `versavice/biohub-e018-x138-r05-gate05` | E013 + gate 0.5 | 56596038（採点中） | — |
-| E019 | `versavice/biohub-e019-x138-r05-gate05-diverge125` | E013 + gate 0.5 + divergence 1.25 µm | 56596034（採点中） | — |
+| E016 | `versavice/biohub-e016-x138-r05-diverge125` | E013 + divergence 1.25 µm | 56596031 | 0.956 |
+| E017 | `versavice/biohub-e017-x138-r05-nomutualnn` | E013 + 最近傍の制限なし | 56596041 | 0.959 |
+| E018 | `versavice/biohub-e018-x138-r05-gate05` | E013 + gate 0.5 | 56596038 | 0.957 |
+| E019 | `versavice/biohub-e019-x138-r05-gate05-diverge125` | E013 + gate 0.5 + divergence 1.25 µm | 56596034 | 0.955 |
 | E020 | `versavice/biohub-e020-x138-r07-diverge125` | E016 + rescue 0.7（9/28 の条件付きの候補） | 実行済み・提出していない | — |
 | E021 | `versavice/biohub-e021-x138-r07-gate05-diverge125` | E019 + rescue 0.7（9/28 の条件付きの候補） | 実行済み・提出していない | — |
 | E022 | `versavice/biohub-e022-x138-r05-diverge175` | E013 + divergence 1.75 µm（9/28 の条件付きの候補） | 実行済み・提出していない | — |
