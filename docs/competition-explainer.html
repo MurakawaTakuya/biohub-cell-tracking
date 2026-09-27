@@ -161,11 +161,11 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <h1>胚の中の細胞を、<br>1つ残らず<br>追いかける。</h1>
     <p class="lede">ゼブラフィッシュの胚を撮った 3D の顕微鏡動画から、細胞を見つけ、次のフレームのどの細胞とつながるかを決め、分裂の瞬間を見つける。そういうコンペです。このページでは、課題の中身と、私たちがここまでに試したこと、今いちばん良い手法をまとめます。</p>
     <div class="stats" aria-label="現状">
-      <div><b>75<small style="font-size:13px"> 位</small></b><span>3,924 チーム中（9/26 19:29 JST）</span></div>
+      <div><b>82<small style="font-size:13px"> 位</small></b><span>3,938 チーム中（9/27 09:40 JST）</span></div>
       <div><b>0.959</b><span>公開 LB の最高（E013）</span></div>
       <div><b>9/30</b><span>締切 08:59 JST</span></div>
     </div>
-    <p class="small">銀メダル圏は 195 位まで（その順位のスコアは 0.954）、金は 17 位まで（同 0.966）。数字は記載時点の観測値で、Private LB は締切後に公開されます。</p>
+    <p class="small">銀メダル圏は 195 位まで（その順位のスコアは 0.955）、金は 17 位まで（同 0.966）。数字は記載時点の観測値で、Private LB は締切後に公開されます。</p>
   </div>
   <div class="scope" aria-label="細胞の核が動き、分裂する様子のアニメーション">
     <canvas id="scope" width="720" height="720"></canvas>
@@ -317,6 +317,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
       <tr><td class="mono">E012</td><td>E003 + rescue 0.7（rescue が Geo 系でも効くか）</td><td><span class="tag geo">Geo</span></td><td class="num">78</td><td class="num mono">0.950</td></tr>
       <tr class="best"><td class="mono">E013</td><td>E010 の rescue を 0.5 に（0.7 がたまたまではないか）</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num mono"><b>0.959</b></td></tr>
       <tr><td class="mono">E014</td><td>B005 + rescue 0.7 のみ（gate なし。rescue だけの効果）</td><td><span class="tag">x138</span></td><td class="num">81</td><td class="num mono">0.957</td></tr>
+      <tr><td class="mono">E015</td><td>E013 の rescue を 0.3 に</td><td><span class="tag">x138</span></td><td class="num">64</td><td class="num mono">0.959</td></tr>
     </tbody>
   </table></div>
   <p class="small">分裂数は、公開テスト 4 本の出力に含まれる分裂（出次数 2 のノード）の数。7 月に参加したときの最高は 0.901。提出しなかった実験（E001、E004、E005、E008）は表から省いています。</p>
@@ -354,7 +355,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <li>土台の Notebook: <a href="https://www.kaggle.com/code/anvithpothula/biohub-x138">anvithpothula/biohub-x138</a>、<a href="https://www.kaggle.com/code/amanatar/biohub-geometric-fusion">amanatar/biohub-geometric-fusion</a></li>
     <li>重み: <a href="https://www.kaggle.com/datasets/anvithpothula/biohub-v1284-head-s075">biohub-v1284-head-s075</a>、<a href="https://www.kaggle.com/datasets/giorgosi/biohub-divnet-v2">biohub-divnet-v2</a>、pilkwang の 3 つのデータセット</li>
     <li>実験の記録: リポジトリ <span class="mono">MurakawaTakuya/biohub-cell-tracking</span> の <span class="mono">README.md</span>、<span class="mono">runs/</span>、<span class="mono">docs/</span></li>
-    <li>順位とスコアは 2026-09-26 19:29 JST の公開 LB。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
+    <li>順位とスコアは 2026-09-27 09:40 JST の公開 LB。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
   </ul>
 </div></footer>
 
@@ -491,7 +492,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     {id:'E007', s:.954, c:'--gfp', t:'9/25', d:1}, {id:'E009', s:.955, c:'--gfp', t:'9/25', d:1},
     {id:'E010', s:.958, c:'--gfp', t:'9/25', d:1}, {id:'E011', s:.955, c:'--gfp', t:'9/25', d:1},
     {id:'E012', s:.950, c:'--geo', t:'9/26', d:1}, {id:'E013', s:.959, c:'--gfp', t:'9/26', d:1},
-    {id:'E014', s:.957, c:'--gfp', t:'9/26', d:1}
+    {id:'E014', s:.957, c:'--gfp', t:'9/26', d:1}, {id:'E015', s:.959, c:'--gfp', t:'9/26', d:1}
   ];
   var js = document.getElementById('journey-chart'), X0 = 64, X1 = 736, Y0 = 26, Y1 = 262, lo = .944, hi = .960;
   function yj(v){ return Y1 - (v - lo) / (hi - lo) * (Y1 - Y0); }
@@ -500,7 +501,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     js.appendChild(el('line', {x1:X0, x2:X1, y1:yj(v), y2:yj(v), stroke:'var(--line)'}));
     js.appendChild(el('text', {x:X0 - 8, y:yj(v) + 4, 'text-anchor':'end'}, v.toFixed(3)));
   }
-  [{v:.954, t:'銀の境目（195 位）'}, {v:.947, t:'公開コピーの壁'}].forEach(function(r){
+  [{v:.955, t:'銀の境目（195 位）'}, {v:.947, t:'公開コピーの壁'}].forEach(function(r){
     js.appendChild(el('line', {x1:X0, x2:X1, y1:yj(r.v), y2:yj(r.v), stroke:'var(--amber)', 'stroke-dasharray':'6 5', 'stroke-width':1.5}));
     js.appendChild(el('text', {x:X1 + 10, y:yj(r.v) + 4, 'class':'strong'}, r.t));
   });
