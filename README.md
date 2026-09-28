@@ -44,7 +44,7 @@
 | E023 | `versavice/biohub-e023-x138-r05-gate05-diverge175` | E018 + divergence 1.75 µm（9/28 の条件付きの候補） | 実行済み・提出していない | — |
 | E024 | `versavice/biohub-e024-x138-r05-nnfallback` | E013 + 最近傍の候補が失格したときだけ 2 番目を試す（9/28 の条件付きの候補） | 実行済み・提出していない | — |
 | E025 | `versavice/biohub-e025-x138-r05-diverge300` | E013 + divergence 3.0 µm | 56611055 | 0.957 |
-| E026 | `versavice/biohub-e026-x138-r05-symtau04` | E013 + 姉妹の対称性 tau 0.4 | 56630466（採点中） | — |
+| E026 | `versavice/biohub-e026-x138-r05-symtau04` | E013 + 姉妹の対称性 tau 0.4 | 56630466 | 0.950 |
 | E027 | `versavice/biohub-e027-x138-r05-ilpdiv04` | E013 + ILP_DIVISION_WEIGHT 0.4（discussion 743929） | 準備済み | — |
 | E028 | `versavice/biohub-e028-x138-r05-readmit094` | E013 + READMIT_MIN_SCORE 0.94（discussion 743929） | 準備済み | — |
 | E029 | `versavice/biohub-e029-x138-r05-ilpdiv04-readmit094` | E013 + 上の 2 つ | 準備済み | — |
