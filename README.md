@@ -47,7 +47,7 @@
 | E026 | `versavice/biohub-e026-x138-r05-symtau04` | E013 + 姉妹の対称性 tau 0.4 | 56630466 | 0.950 |
 | E027 | `versavice/biohub-e027-x138-r05-ilpdiv04` | E013 + ILP_DIVISION_WEIGHT 0.4（discussion 743929） | 56641958（採点中） | — |
 | E028 | `versavice/biohub-e028-x138-r05-readmit094` | E013 + READMIT_MIN_SCORE 0.94（discussion 743929） | 56641962（採点中） | — |
-| E029 | `versavice/biohub-e029-x138-r05-ilpdiv04-readmit094` | E013 + 上の 2 つ | 準備済み | — |
+| E029 | `versavice/biohub-e029-x138-r05-ilpdiv04-readmit094` | E013 + 上の 2 つ | 実行済み・提出していない | — |
 | A003 | サーバー（`server/gt_division_check.py`） | 可視の 4 動画で、予測した分裂を正解と照合 | — | 正解の分裂が 3 件しかなく、どの版も一致 0 件。判断できない |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
