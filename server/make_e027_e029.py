@@ -4,6 +4,7 @@ applied on E013 (gate 0.3, rescue 0.5) with SAFEDIV_DIAG logging. Neither key is
   E028: READMIT_MIN_SCORE 0.965 -> 0.94
   E029: both
   E030 / E031: readmit min score 0.92 / 0.90 (step further after E028 won)
+  E032 / E033: E028 with readmit radius 5 / 3 um
 """
 import json
 
@@ -17,6 +18,11 @@ VARIANTS = [
     # 9/29: E028 (readmit 0.94) was the new best, so step further in the same direction.
     ("e030-x138-r05-readmit092", "E030: E013 with readmit min score 0.92.", {"BIOHUB_READMIT_MIN_SCORE": "0.92"}, "Biohub E030 x138 R05 Readmit092"),
     ("e031-x138-r05-readmit090", "E031: E013 with readmit min score 0.90.", {"BIOHUB_READMIT_MIN_SCORE": "0.90"}, "Biohub E031 x138 R05 Readmit090"),
+    # 9/29: the sibling readmit knob (radius, 4 um) in both directions on E028.
+    ("e032-x138-r05-readmit094-rad5", "E032: E028 with readmit radius 5 um.",
+     {"BIOHUB_READMIT_MIN_SCORE": "0.94", "BIOHUB_READMIT_RADIUS_UM": "5"}, "Biohub E032 x138 R05 Readmit094 Rad5"),
+    ("e033-x138-r05-readmit094-rad3", "E033: E028 with readmit radius 3 um.",
+     {"BIOHUB_READMIT_MIN_SCORE": "0.94", "BIOHUB_READMIT_RADIUS_UM": "3"}, "Biohub E033 x138 R05 Readmit094 Rad3"),
 ]
 
 if __name__ == "__main__":

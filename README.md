@@ -50,6 +50,8 @@
 | E029 | `versavice/biohub-e029-x138-r05-ilpdiv04-readmit094` | E013 + 上の 2 つ | 56644604 | 0.959 |
 | E030 | `versavice/biohub-e030-x138-r05-readmit092` | E013 + READMIT_MIN_SCORE 0.92 | 56665285（採点中） | — |
 | E031 | `versavice/biohub-e031-x138-r05-readmit090` | E013 + READMIT_MIN_SCORE 0.90 | 56665289（採点中） | — |
+| E032 | `versavice/biohub-e032-x138-r05-readmit094-rad5` | E028 + READMIT_RADIUS_UM 5 µm | 準備済み | — |
+| E033 | `versavice/biohub-e033-x138-r05-readmit094-rad3` | E028 + READMIT_RADIUS_UM 3 µm | 準備済み | — |
 | A003 | サーバー（`server/gt_division_check.py`） | 可視の 4 動画で、予測した分裂を正解と照合 | — | 正解の分裂が 3 件しかなく、どの版も一致 0 件。判断できない |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
