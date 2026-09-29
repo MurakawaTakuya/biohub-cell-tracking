@@ -3,6 +3,7 @@ applied on E013 (gate 0.3, rescue 0.5) with SAFEDIV_DIAG logging. Neither key is
   E027: ILP_DIVISION_WEIGHT 1.2 -> 0.4
   E028: READMIT_MIN_SCORE 0.965 -> 0.94
   E029: both
+  E030 / E031: readmit min score 0.92 / 0.90 (step further after E028 won)
 """
 import json
 
@@ -13,6 +14,9 @@ VARIANTS = [
     ("e028-x138-r05-readmit094", "E028: E013 with readmit min score 0.94.", {"BIOHUB_READMIT_MIN_SCORE": "0.94"}, "Biohub E028 x138 R05 Readmit094"),
     ("e029-x138-r05-ilpdiv04-readmit094", "E029: E013 with ILP division weight 0.4 and readmit min score 0.94.",
      {"BIOHUB_ILP_DIVISION_WEIGHT": "0.4", "BIOHUB_READMIT_MIN_SCORE": "0.94"}, "Biohub E029 x138 R05 ILPDiv04 Readmit094"),
+    # 9/29: E028 (readmit 0.94) was the new best, so step further in the same direction.
+    ("e030-x138-r05-readmit092", "E030: E013 with readmit min score 0.92.", {"BIOHUB_READMIT_MIN_SCORE": "0.92"}, "Biohub E030 x138 R05 Readmit092"),
+    ("e031-x138-r05-readmit090", "E031: E013 with readmit min score 0.90.", {"BIOHUB_READMIT_MIN_SCORE": "0.90"}, "Biohub E031 x138 R05 Readmit090"),
 ]
 
 if __name__ == "__main__":
