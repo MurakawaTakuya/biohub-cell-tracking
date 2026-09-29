@@ -3,9 +3,9 @@
 コンペ: <https://www.kaggle.com/competitions/biohub-cell-tracking-during-development>（コードコンペ。締切 2026-09-29）
 チーム: Mositaku（`versavice`）
 
-## 今の再開地点（2026-09-29 08:00 JST）
+## 今の再開地点（2026-09-29 23:55 JST、締切前の最終）
 
-- 最高は **E028 = 0.960**（E013 + READMIT_MIN_SCORE 0.94）。**107 位 / 3,980 チーム**（2026-09-29 07:58 JST。銀は 195 位まで、その順位のスコアは 0.957。金は 17 位まで、同 0.969）。
+- 最高は **E028 = 0.960**（E013 + READMIT_MIN_SCORE 0.94）。**117 位 / 4,000 チーム**（2026-09-29 23:53 JST。銀は 195 位まで、その順位のスコアは 0.957。金は 17 位まで、同 0.969）。9/29 の E030〜E033（読み戻しの閾値と距離）は 0.959 / 0.960 / 0.957 / 0.960 で、更新なし。
 - E011（E006 + スムージング後の weak-leaf pruning）は 0.955 で、E006 と同じ。
 - 最終提出は、統一ルールにより **E028（56641962）+ E013（56566441）** 。2026-09-29 朝に Kaggle で付け替え済み（2/2、ページで確認）。それまでは E013 + E010 を選んでいた。E012（0.950）、E014（0.957）でも rescue の効果を確かめた。E015（rescue 0.3）は 0.959 で E013 と同点なので、変えない。9/27 の 2×2 の比較（E016〜E019）は、divergence の緩和も gate 0.5 も下がり、E017（最近傍の制限なし）は同点だった。統一ルールにより、最終提出は変えない。次の手順は [docs/session_handoff.md](docs/session_handoff.md)。
 - 2026-09-26 に Codex CLI（gpt-6-astra high）のレビューを受けた: [docs/codex_review_2026-09-26.md](docs/codex_review_2026-09-26.md)
@@ -48,10 +48,10 @@
 | E027 | `versavice/biohub-e027-x138-r05-ilpdiv04` | E013 + ILP_DIVISION_WEIGHT 0.4（discussion 743929） | 56641958 | 0.958 |
 | E028 | `versavice/biohub-e028-x138-r05-readmit094` | E013 + READMIT_MIN_SCORE 0.94（discussion 743929） | 56641962 | **0.960** |
 | E029 | `versavice/biohub-e029-x138-r05-ilpdiv04-readmit094` | E013 + 上の 2 つ | 56644604 | 0.959 |
-| E030 | `versavice/biohub-e030-x138-r05-readmit092` | E013 + READMIT_MIN_SCORE 0.92 | 56665285（採点中） | — |
-| E031 | `versavice/biohub-e031-x138-r05-readmit090` | E013 + READMIT_MIN_SCORE 0.90 | 56665289（採点中） | — |
-| E032 | `versavice/biohub-e032-x138-r05-readmit094-rad5` | E028 + READMIT_RADIUS_UM 5 µm | 56666457（採点中） | — |
-| E033 | `versavice/biohub-e033-x138-r05-readmit094-rad3` | E028 + READMIT_RADIUS_UM 3 µm | 56666460（採点中） | — |
+| E030 | `versavice/biohub-e030-x138-r05-readmit092` | E013 + READMIT_MIN_SCORE 0.92 | 56665285 | 0.959 |
+| E031 | `versavice/biohub-e031-x138-r05-readmit090` | E013 + READMIT_MIN_SCORE 0.90 | 56665289 | 0.960 |
+| E032 | `versavice/biohub-e032-x138-r05-readmit094-rad5` | E028 + READMIT_RADIUS_UM 5 µm | 56666457 | 0.957 |
+| E033 | `versavice/biohub-e033-x138-r05-readmit094-rad3` | E028 + READMIT_RADIUS_UM 3 µm | 56666460 | 0.960 |
 | A003 | サーバー（`server/gt_division_check.py`） | 可視の 4 動画で、予測した分裂を正解と照合 | — | 正解の分裂が 3 件しかなく、どの版も一致 0 件。判断できない |
 | A001 | サーバー（`server/divnet_check.py`） | 公開 DivNet の重みを学習データの正解ラベルで検証 | — | AUC 0.832（学習済みの動画が大半を占める、前処理と動作の確認。汎化性能の CV ではない） |
 
