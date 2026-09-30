@@ -152,7 +152,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
 </style>
 
 <nav class="toc" aria-label="目次"><div class="wrap">
-  <a href="#task">課題</a><a href="#data">データ</a><a href="#metric">評価</a><a href="#submit">提出の仕組み</a><a href="#method">今の最良手法</a><a href="#divnet">DivNet</a><a href="#journey">試したこと</a><a href="#learned">わかったこと</a><a href="#final">最終提出</a>
+  <a href="#task">課題</a><a href="#data">データ</a><a href="#metric">評価</a><a href="#submit">提出の仕組み</a><a href="#method">今の最良手法</a><a href="#divnet">DivNet</a><a href="#journey">試したこと</a><a href="#learned">わかったこと</a><a href="#final">最終提出</a><a href="#result">結果と反省</a>
 </div></nav>
 
 <header class="hero"><div class="wrap hero-grid">
@@ -161,11 +161,11 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <h1>胚の中の細胞を、<br>1つ残らず<br>追いかける。</h1>
     <p class="lede">ゼブラフィッシュの胚を撮った 3D の顕微鏡動画から、細胞を見つけ、次のフレームのどの細胞とつながるかを決め、分裂の瞬間を見つける。そういうコンペです。このページでは、課題の中身と、私たちがここまでに試したこと、今いちばん良い手法をまとめます。</p>
     <div class="stats" aria-label="現状">
-      <div><b>82<small style="font-size:13px"> 位</small></b><span>3,938 チーム中（9/27 09:40 JST）</span></div>
-      <div><b>0.959</b><span>公開 LB の最高（E013）</span></div>
-      <div><b>9/30</b><span>締切 08:59 JST</span></div>
+      <div><b>1,059<small style="font-size:13px"> 位</small></b><span>非公開 LB、4,017 チーム中（最終）</span></div>
+      <div><b>0.917</b><span>非公開 LB（公開 LB は 0.960）</span></div>
+      <div><b>126 → 1,059</b><span>公開 → 非公開の順位</span></div>
     </div>
-    <p class="small">銀メダル圏は 195 位まで（その順位のスコアは 0.955）、金は 17 位まで（同 0.966）。数字は記載時点の観測値で、Private LB は締切後に公開されます。</p>
+    <p class="small">コンペは 2026-09-30 に終了。非公開 LB で銅メダルの目安（400 位）は 0.920、1 位は 0.977 で、メダルには届きませんでした。公開 LB で積み上げた +0.007 は、非公開 LB ではほぼ 0 でした（<a href="#result">10 · 結果と反省</a>）。</p>
   </div>
   <div class="scope" aria-label="細胞の核が動き、分裂する様子のアニメーション">
     <canvas id="scope" width="720" height="720"></canvas>
@@ -248,7 +248,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
 </div></section>
 
 <section id="method"><div class="wrap">
-  <p class="label">05 · 今の最良手法（E013、公開 LB 0.959）</p>
+  <p class="label">05 · 最後の手法（E028、公開 LB 0.960 / 非公開 LB 0.917）</p>
   <h2>公開の土台に、DivNet で分裂を「捨てる」と「救う」を足した。</h2>
   <div class="legend">
     <span><span class="chip pk">pilkwang</span> 公開の学習済み重みとパイプライン</span>
@@ -290,8 +290,8 @@ footer ul{margin:8px 0 0;padding-left:18px}
 </div></section>
 
 <section id="journey"><div class="wrap">
-  <p class="label">07 · 試したこと（9/23〜9/26）</p>
-  <h2>0.947 の壁から、0.959 まで。</h2>
+  <p class="label">07 · 試したこと（9/23〜9/29）</p>
+  <h2>公開 LB は 0.947 から 0.960 まで上がった。</h2>
   <div class="chart"><svg id="journey-chart" viewBox="0 0 900 330" role="img" aria-label="提出ごとの公開 LB スコア"></svg></div>
   <div class="legend">
     <span><span class="dot" style="background:var(--geo)"></span>Geometric Fusion 系</span>
@@ -300,52 +300,72 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <span><span class="dot" style="background:var(--amber)"></span>時間切れで失敗</span>
   </div>
   <div class="tbl"><table>
-    <thead><tr><th>ID</th><th>中身</th><th>系統</th><th class="num">分裂数</th><th class="num">公開 LB</th></tr></thead>
+    <thead><tr><th>ID</th><th>中身</th><th>系統</th><th class="num">分裂数</th><th class="num">公開 LB</th><th class="num">非公開 LB</th></tr></thead>
     <tbody>
-      <tr><td class="mono">B001</td><td>Proxy 0947 の公開 Notebook をそのまま fork</td><td><span class="tag geo">Harmonic</span></td><td class="num">—</td><td class="num mono">0.947</td></tr>
-      <tr><td class="mono">B002</td><td>Geometric Fusion をそのまま fork</td><td><span class="tag geo">Geo</span></td><td class="num">163</td><td class="num"><span class="tag fail">時間切れ</span></td></tr>
-      <tr><td class="mono">B003</td><td>x138 から、非公開だった座標補正の重みを外したもの</td><td><span class="tag">x138</span></td><td class="num">—</td><td class="num mono">0.946</td></tr>
-      <tr><td class="mono">B004</td><td>B002 の設定を固定して検証を切った短時間版（出力は同じ）</td><td><span class="tag geo">Geo</span></td><td class="num">163</td><td class="num mono">0.947</td></tr>
-      <tr><td class="mono">E002</td><td>Geo + DivNet 0.5（検証が別の設定を選んだため比較できない）</td><td><span class="tag geo">Geo</span></td><td class="num">37</td><td class="num mono">0.946</td></tr>
-      <tr><td class="mono">E003</td><td>B004 + DivNet 0.3</td><td><span class="tag geo">Geo</span></td><td class="num">71</td><td class="num mono">0.949</td></tr>
-      <tr><td class="mono">B005</td><td>x138 + 公開された座標補正の重み</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num mono">0.953</td></tr>
-      <tr><td class="mono">E006</td><td>B005 + DivNet gate 0.3</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
-      <tr><td class="mono">E007</td><td>B005 + DivNet 0.5</td><td><span class="tag">x138</span></td><td class="num">30</td><td class="num mono">0.954</td></tr>
-      <tr><td class="mono">E009</td><td>E006 + weak-leaf pruning（弱いつながりの終端を削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
-      <tr><td class="mono">E010</td><td>E006 + DivNet rescue 0.7（DeepCenter が却下した候補を救う）</td><td><span class="tag">x138</span></td><td class="num">54</td><td class="num mono">0.958</td></tr>
-      <tr><td class="mono">E011</td><td>E006 + weak-leaf pruning（なめらかにした後に削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td></tr>
-      <tr><td class="mono">E012</td><td>E003 + rescue 0.7（rescue が Geo 系でも効くか）</td><td><span class="tag geo">Geo</span></td><td class="num">78</td><td class="num mono">0.950</td></tr>
-      <tr class="best"><td class="mono">E013</td><td>E010 の rescue を 0.5 に（0.7 がたまたまではないか）</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num mono"><b>0.959</b></td></tr>
-      <tr><td class="mono">E014</td><td>B005 + rescue 0.7 のみ（gate なし。rescue だけの効果）</td><td><span class="tag">x138</span></td><td class="num">81</td><td class="num mono">0.957</td></tr>
-      <tr><td class="mono">E015</td><td>E013 の rescue を 0.3 に</td><td><span class="tag">x138</span></td><td class="num">64</td><td class="num mono">0.959</td></tr>
-    </tbody>
+      <tr><td class="mono">B001</td><td>Proxy 0947 の公開 Notebook をそのまま fork</td><td><span class="tag geo">Harmonic</span></td><td class="num">—</td><td class="num mono">0.947</td><td class="num mono">0.914</td></tr>
+      <tr><td class="mono">B002</td><td>Geometric Fusion をそのまま fork</td><td><span class="tag geo">Geo</span></td><td class="num">163</td><td class="num"><span class="tag fail">時間切れ</span></td><td class="num mono">—</td></tr>
+      <tr><td class="mono">B003</td><td>x138 から、非公開だった座標補正の重みを外したもの</td><td><span class="tag">x138</span></td><td class="num">—</td><td class="num mono">0.946</td><td class="num mono">0.913</td></tr>
+      <tr><td class="mono">B004</td><td>B002 の設定を固定して検証を切った短時間版（出力は同じ）</td><td><span class="tag geo">Geo</span></td><td class="num">163</td><td class="num mono">0.947</td><td class="num mono">0.918</td></tr>
+      <tr><td class="mono">E002</td><td>Geo + DivNet 0.5（検証が別の設定を選んだため比較できない）</td><td><span class="tag geo">Geo</span></td><td class="num">37</td><td class="num mono">0.946</td><td class="num mono">0.911</td></tr>
+      <tr><td class="mono">E003</td><td>B004 + DivNet 0.3</td><td><span class="tag geo">Geo</span></td><td class="num">71</td><td class="num mono">0.949</td><td class="num mono">0.915</td></tr>
+      <tr><td class="mono">B005</td><td>x138 + 公開された座標補正の重み</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num mono">0.953</td><td class="num mono">0.917</td></tr>
+      <tr><td class="mono">E006</td><td>B005 + DivNet gate 0.3</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td><td class="num mono">0.914</td></tr>
+      <tr><td class="mono">E007</td><td>B005 + DivNet 0.5</td><td><span class="tag">x138</span></td><td class="num">30</td><td class="num mono">0.954</td><td class="num mono">0.915</td></tr>
+      <tr><td class="mono">E009</td><td>E006 + weak-leaf pruning（弱いつながりの終端を削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td><td class="num mono">0.914</td></tr>
+      <tr><td class="mono">E010</td><td>E006 + DivNet rescue 0.7（DeepCenter が却下した候補を救う）</td><td><span class="tag">x138</span></td><td class="num">54</td><td class="num mono">0.958</td><td class="num mono">0.916</td></tr>
+      <tr><td class="mono">E011</td><td>E006 + weak-leaf pruning（なめらかにした後に削る）</td><td><span class="tag">x138</span></td><td class="num">34</td><td class="num mono">0.955</td><td class="num mono">0.914</td></tr>
+      <tr><td class="mono">E012</td><td>E003 + rescue 0.7（rescue が Geo 系でも効くか）</td><td><span class="tag geo">Geo</span></td><td class="num">78</td><td class="num mono">0.950</td><td class="num mono">0.915</td></tr>
+      <tr><td class="mono">E013</td><td>E010 の rescue を 0.5 に（0.7 がたまたまではないか）</td><td><span class="tag">x138</span></td><td class="num">62</td><td class="num mono">0.959</td><td class="num mono">0.916</td></tr>
+      <tr><td class="mono">E014</td><td>B005 + rescue 0.7 のみ（gate なし。rescue だけの効果）</td><td><span class="tag">x138</span></td><td class="num">81</td><td class="num mono">0.957</td><td class="num mono">0.918</td></tr>
+      <tr><td class="mono">E015</td><td>E013 の rescue を 0.3 に</td><td><span class="tag">x138</span></td><td class="num">64</td><td class="num mono">0.959</td><td class="num mono">0.917</td></tr>
+          <tr><td class="mono">E016</td><td>E013 + divergence を 1.25 µm に緩める</td><td><span class="tag">x138</span></td><td class="num">92</td><td class="num mono">0.956</td><td class="num mono">0.916</td></tr>
+      <tr><td class="mono">E018</td><td>E013 + gate 0.5</td><td><span class="tag">x138</span></td><td class="num">58</td><td class="num mono">0.957</td><td class="num mono">0.916</td></tr>
+      <tr><td class="mono">E025</td><td>E013 + divergence を 3.0 µm に厳しくする</td><td><span class="tag">x138</span></td><td class="num">40</td><td class="num mono">0.957</td><td class="num mono">0.913</td></tr>
+      <tr><td class="mono">E026</td><td>E013 + 姉妹の対称性の条件を厳しくする</td><td><span class="tag">x138</span></td><td class="num">47</td><td class="num mono">0.950</td><td class="num mono">0.912</td></tr>
+      <tr class="best"><td class="mono">E028</td><td>E013 + READMIT_MIN_SCORE 0.94（discussion の設定）</td><td><span class="tag">x138</span></td><td class="num">61</td><td class="num mono"><b>0.960</b></td><td class="num mono">0.917</td></tr>
+      <tr><td class="mono">E033</td><td>E028 + 読み戻す距離 3 µm</td><td><span class="tag">x138</span></td><td class="num">59</td><td class="num mono">0.960</td><td class="num mono">0.918</td></tr>
+</tbody>
   </table></div>
-  <p class="small">分裂数は、公開テスト 4 本の出力に含まれる分裂（出次数 2 のノード）の数。7 月に参加したときの最高は 0.901。提出しなかった実験（E001、E004、E005、E008）は表から省いています。</p>
+  <p class="small">分裂数は、公開テスト 4 本の出力に含まれる分裂（出次数 2 のノード）の数。7 月に参加したときの最高は 0.901。提出しなかった実験（E001、E004、E005、E008）と、E017、E019〜E024、E027、E029〜E032 は表から省いています（全 33 提出の非公開 LB は 0.911〜0.918）。</p>
 </div></section>
 
 <section id="learned"><div class="wrap">
   <p class="label">08 · わかったこと</p>
-  <h2>効いたのは、公開の重みと、DivNet の「捨てる」「救う」。</h2>
+  <h2>公開 LB では効いたが、非公開 LB ではほぼ効かなかった。</h2>
   <div class="findings">
+    <div class="finding"><h3>公開 LB の +0.007 は、非公開では 0</h3><p>x138 をそのまま出した B005 も、最後の E028 も、非公開 LB は 0.917。公開 LB は可視の 4 本だけで決まり（非公開はデータの約 71%）、0.001〜0.003 の差は雑音だった。</p></div>
     <div class="finding"><h3>公開 Notebook のコピーは同点になる</h3><p>0.947 に 726 チームが並んでいた。同点では提出が早い方が上位になるので、後から同じものを出しても順位は上がらない。</p></div>
     <div class="finding"><h3>タイトルのスコアは当てにならない</h3><p>Kernel の一覧 API はスコアを返さない。スコア順の並びで見ると、「0.951」と書かれた Notebook も 0.947 より下にあった。</p></div>
     <div class="finding"><h3>非公開の依存は、後から公開されることがある</h3><p>x138 の座標補正の重みは最初は非公開で、fork しても動かなかった。9/24 に公開され、そのまま出すだけで 0.953 になった。</p></div>
-    <div class="finding"><h3>DivNet は 2 つの系統で +0.002</h3><p>Geo（0.947 → 0.949）でも x138（0.953 → 0.955）でも同じだけ上がった。ただし、どちらも同じ公開テストでの結果で、Private での改善幅は分からない。</p></div>
+    <div class="finding"><h3>DivNet は公開で +0.002、非公開で −0.003</h3><p>Geo（0.947 → 0.949）でも x138（0.953 → 0.955）でも公開 LB は上がった。しかし非公開 LB では、x138 で 0.917 → 0.914 と下がっていた。2 つの系統で効いても、同じ公開テスト上の結果では独立した確認にならなかった。</p></div>
     <div class="finding"><h3>分裂を消すと、軌跡も消える</h3><p>出力を比べると、分裂を 1 つ消すと、たいてい娘の片方の軌跡ごと出力から消えていた。+0.002 は、分裂の項だけでなくエッジの項からも来ている可能性がある。</p></div>
-    <div class="finding"><h3>rescue でさらに +0.003〜0.004</h3><p>DeepCenter の却下は厳しすぎた。DivNet のスコアが高い候補を救うと 0.955 → 0.958 になった。別の系統（E012、+0.001）、gate なし（E014、B005 より +0.004）でも効いた。閾値を 0.5 に下げると 0.959 になった（E013）。</p></div>
+    <div class="finding"><h3>rescue は公開で +0.003〜0.004</h3><p>DivNet のスコアが高い候補を救うと、公開 LB は 0.955 → 0.958 → 0.959 と上がった。非公開 LB では 0.914 → 0.916 で、gate で失った分を戻しただけだった。</p></div>
     <div class="finding"><h3>別の AI のレビューで、言い過ぎを直した</h3><p>Codex CLI（gpt-6-astra）に読み取り専用でレビューを頼んだ。可視の 4 本は採点対象ではないこと、時間切れ対策の仕組みに穴があることなどを指摘され、記録を直した。結果を見る前に、判断の基準を決めておくようにした。</p></div>
     <div class="finding"><h3>学習データでの CV は使えない</h3><p>公開の検出器は学習データの 199 動画すべてで学習されている。学習データで測ると in-sample になり、LB の予測に使えない。</p></div>
   </div>
 </div></section>
 
 <section id="final"><div class="wrap">
-  <p class="label">09 · 最終提出（9/28 までに確定）</p>
+  <p class="label">09 · 最終提出（9/29 に確定）</p>
   <h2>公開 LB の高い 2 本。</h2>
   <div class="final">
-    <div class="pick"><span class="label">1 本目</span><b>E013 · 0.959</b><p>x138 + 座標補正 + DivNet gate 0.3 + rescue 0.5。公開 LB で最も高い。</p></div>
-    <div class="pick second"><span class="label" style="color:var(--geo)">2 本目</span><b>E010 · 0.958</b><p>rescue の閾値を 0.7 にしたもの。救う数が少ない分、控えめな版になる。</p></div>
+    <div class="pick"><span class="label">1 本目</span><b>E028 · 0.960 → 0.917</b><p>E013 + READMIT_MIN_SCORE 0.94。公開 LB で最も高かった。矢印の右は非公開 LB。</p></div>
+    <div class="pick second"><span class="label" style="color:var(--geo)">2 本目</span><b>E013 · 0.959 → 0.916</b><p>x138 + 座標補正 + DivNet gate 0.3 + rescue 0.5。</p></div>
   </div>
-  <p class="small">以前は、DivNet 全体の保険として B005（0.953）を 2 本目にする予定でした。公開 LB の高い方を選ぶ方針に変え、E006 にしました。結果を見る前に決めた基準（runs/E013.md）に従い、E013 が 0.959 になったので、E013 + E010 にしました。rescue が Private で外れた場合は 2 本とも下がりますが、rescue は 3 つの比較（E012、E013、E014）で一貫して効いていました。</p>
+  <p class="small">結果を見る前に決めたルール（新しい版が公開 LB で最高を更新したら、その版 + E013）に従って選んだ。非公開 LB の成績は、2 本のうち高い方の 0.917。全提出の中で非公開 LB が最も高かったのは 0.918（E014、E031、E033、B004）で、どれを選んでも銅メダルの目安（0.920）には届かなかった。</p>
+</div></section>
+
+<section id="result"><div class="wrap">
+  <p class="label">10 · 結果と反省</p>
+  <h2>公開 LB の小さな差は、非公開では消えた。</h2>
+  <div class="chart"><svg id="pubpriv" viewBox="0 0 760 330" role="img" aria-label="提出ごとの公開 LB と非公開 LB"></svg></div>
+  <p class="small">点は提出 1 本（公開 LB 0.945 以上の 25 本）。横が公開 LB、縦が非公開 LB。公開 LB が 0.953 から 0.960 まで広がっていても、非公開 LB は 0.912〜0.918 の狭い帯に収まっている。大きく下がった変更（E026 など）だけが、非公開でもはっきり下がった。</p>
+  <div class="findings">
+    <div class="finding"><h3>最終成績</h3><p>非公開 LB 0.917、1,059 位 / 4,017 チーム（公開 LB では 0.960、126 位）。銅メダルの目安（400 位）は 0.920。公開 Notebook を調整したチームは、非公開では 0.917〜0.922 に集まった。</p></div>
+    <div class="finding"><h3>反省 1: 公開 LB のぶれを見積もらなかった</h3><p>公開 LB は可視の 4 本だけだった。その上での 0.001〜0.003 の差を改善とみなして、約 30 回の提出を調整に使った。最初に公開 LB の大きさとぶれを見積もり、それより小さい差は効果として扱わないべきだった。</p></div>
+    <div class="finding"><h3>反省 2: 土台を変える方針を立てなかった</h3><p>同じ公開 Notebook を数百チームが使っていた。その調整だけでは、非公開で順位が入れ替わるだけになりやすい。メダルを狙うなら、自前の学習など土台を変え、胚ごとに分けた手元の評価を最初に作る必要があった。</p></div>
+    <div class="finding"><h3>続けること</h3><p>設定を固定して時間切れを防ぐ、結果を見る前に判断の基準を書く、採点を待つ間に次の候補を実行する、外部 AI と Codex CLI にレビューを頼む、記録を GitHub に残す。</p></div>
+  </div>
 </div></section>
 
 <footer><div class="wrap">
@@ -355,7 +375,7 @@ footer ul{margin:8px 0 0;padding-left:18px}
     <li>土台の Notebook: <a href="https://www.kaggle.com/code/anvithpothula/biohub-x138">anvithpothula/biohub-x138</a>、<a href="https://www.kaggle.com/code/amanatar/biohub-geometric-fusion">amanatar/biohub-geometric-fusion</a></li>
     <li>重み: <a href="https://www.kaggle.com/datasets/anvithpothula/biohub-v1284-head-s075">biohub-v1284-head-s075</a>、<a href="https://www.kaggle.com/datasets/giorgosi/biohub-divnet-v2">biohub-divnet-v2</a>、pilkwang の 3 つのデータセット</li>
     <li>実験の記録: リポジトリ <span class="mono">MurakawaTakuya/biohub-cell-tracking</span> の <span class="mono">README.md</span>、<span class="mono">runs/</span>、<span class="mono">docs/</span></li>
-    <li>順位とスコアは 2026-09-27 09:40 JST の公開 LB。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
+    <li>最終の順位とスコアは 2026-09-30 12:30 JST に確認した非公開 LB と公開 LB。振り返りの全文は <span class="mono">docs/retrospective.md</span>。DivNet の分布は、研究室サーバーで学習データを使って測ったもの（A001）。</li>
   </ul>
 </div></footer>
 
@@ -492,16 +512,17 @@ footer ul{margin:8px 0 0;padding-left:18px}
     {id:'E007', s:.954, c:'--gfp', t:'9/25', d:1}, {id:'E009', s:.955, c:'--gfp', t:'9/25', d:1},
     {id:'E010', s:.958, c:'--gfp', t:'9/25', d:1}, {id:'E011', s:.955, c:'--gfp', t:'9/25', d:1},
     {id:'E012', s:.950, c:'--geo', t:'9/26', d:1}, {id:'E013', s:.959, c:'--gfp', t:'9/26', d:1},
-    {id:'E014', s:.957, c:'--gfp', t:'9/26', d:1}, {id:'E015', s:.959, c:'--gfp', t:'9/26', d:1}
+    {id:'E014', s:.957, c:'--gfp', t:'9/26', d:1}, {id:'E015', s:.959, c:'--gfp', t:'9/26', d:1},
+    {id:'E028', s:.960, c:'--gfp', t:'9/28', d:1}
   ];
-  var js = document.getElementById('journey-chart'), X0 = 64, X1 = 736, Y0 = 26, Y1 = 262, lo = .944, hi = .960;
+  var js = document.getElementById('journey-chart'), X0 = 64, X1 = 736, Y0 = 26, Y1 = 262, lo = .944, hi = .962;
   function yj(v){ return Y1 - (v - lo) / (hi - lo) * (Y1 - Y0); }
   function xj(i){ return X0 + (i + .5) * (X1 - X0) / subs.length; }
   for (var v = lo; v <= hi + 1e-9; v += .002){
     js.appendChild(el('line', {x1:X0, x2:X1, y1:yj(v), y2:yj(v), stroke:'var(--line)'}));
     js.appendChild(el('text', {x:X0 - 8, y:yj(v) + 4, 'text-anchor':'end'}, v.toFixed(3)));
   }
-  [{v:.955, t:'銀の境目（195 位）'}, {v:.947, t:'公開コピーの壁'}].forEach(function(r){
+  [{v:.957, t:'公開の銀の境目'}, {v:.947, t:'公開コピーの壁'}].forEach(function(r){
     js.appendChild(el('line', {x1:X0, x2:X1, y1:yj(r.v), y2:yj(r.v), stroke:'var(--amber)', 'stroke-dasharray':'6 5', 'stroke-width':1.5}));
     js.appendChild(el('text', {x:X1 + 10, y:yj(r.v) + 4, 'class':'strong'}, r.t));
   });
@@ -520,8 +541,35 @@ footer ul{margin:8px 0 0;padding-left:18px}
     }
     var y = yj(s.s);
     js.appendChild(el('circle', {cx:x, cy:y, r:s.d ? 9 : 7, fill:'var(' + s.c + ')', stroke: s.d ? 'var(--mag)' : 'none', 'stroke-width':3}));
-    js.appendChild(el('text', {x:x, y:y - 15, 'text-anchor':'middle', 'class': s.id === 'E013' ? 'strong' : ''}, s.s.toFixed(3)));
+    js.appendChild(el('text', {x:x, y:y - 15, 'text-anchor':'middle', 'class': s.id === 'E028' ? 'strong' : ''}, s.s.toFixed(3)));
   });
   js.appendChild(el('text', {x:14, y:14}, '公開 LB'));
+  /* ---------- public vs private scatter (final) ---------- */
+  var pp = [['B001',.947,.914,'--geo'],['B003',.946,.913,'--gfp'],['B004',.947,.918,'--geo'],['E002',.946,.911,'--geo'],['E003',.949,.915,'--geo'],
+    ['B005',.953,.917,'--gfp'],['E006',.955,.914,'--gfp'],['E007',.954,.915,'--gfp'],['E009',.955,.914,'--gfp'],['E010',.958,.916,'--gfp'],
+    ['E011',.955,.914,'--gfp'],['E012',.950,.915,'--geo'],['E013',.959,.916,'--gfp'],['E014',.957,.918,'--gfp'],['E015',.959,.917,'--gfp'],
+    ['E016',.956,.916,'--gfp'],['E017',.959,.917,'--gfp'],['E018',.957,.916,'--gfp'],['E019',.955,.917,'--gfp'],['E025',.957,.913,'--gfp'],
+    ['E026',.950,.912,'--gfp'],['E027',.958,.916,'--gfp'],['E028',.960,.917,'--gfp'],['E031',.960,.918,'--gfp'],['E033',.960,.918,'--gfp']];
+  var sp = document.getElementById('pubpriv'), PX0 = 70, PX1 = 700, PY0 = 24, PY1 = 270, xl = .944, xh = .962, yl = .910, yh = .922;
+  function px(v){ return PX0 + (v - xl) / (xh - xl) * (PX1 - PX0); }
+  function py(v){ return PY1 - (v - yl) / (yh - yl) * (PY1 - PY0); }
+  for (var a = .910; a <= yh + 1e-9; a += .002){
+    sp.appendChild(el('line', {x1:PX0, x2:PX1, y1:py(a), y2:py(a), stroke:'var(--line)'}));
+    sp.appendChild(el('text', {x:PX0 - 8, y:py(a) + 4, 'text-anchor':'end'}, a.toFixed(3)));
+  }
+  for (var b2 = .944; b2 <= xh + 1e-9; b2 += .004){
+    sp.appendChild(el('text', {x:px(b2), y:PY1 + 18, 'text-anchor':'middle'}, b2.toFixed(3)));
+  }
+  sp.appendChild(el('line', {x1:PX0, x2:PX1, y1:py(.920), y2:py(.920), stroke:'var(--amber)', 'stroke-dasharray':'6 5', 'stroke-width':1.5}));
+  sp.appendChild(el('text', {x:PX0 + 6, y:py(.920) - 6, 'class':'strong'}, '非公開の銅の目安 0.920'));
+  pp.forEach(function(d){
+    var fin = d[0] === 'E028' || d[0] === 'E013';
+    sp.appendChild(el('circle', {cx:px(d[1]), cy:py(d[2]), r: fin ? 8 : 6, fill:'var(' + d[3] + ')', stroke: fin ? 'var(--mag)' : 'none', 'stroke-width':3, opacity:.85}));
+    if (['B004','B005','E006','E013','E026','E028','E025','E002'].indexOf(d[0]) >= 0)
+      sp.appendChild(el('text', {x:px(d[1]) + 10, y:py(d[2]) + 4, 'class': fin ? 'strong' : ''}, d[0]));
+  });
+  sp.appendChild(el('text', {x:(PX0 + PX1) / 2, y:PY1 + 40, 'text-anchor':'middle'}, '公開 LB'));
+  sp.appendChild(el('text', {x:14, y:14}, '非公開 LB'));
+
 })();
 </script>
