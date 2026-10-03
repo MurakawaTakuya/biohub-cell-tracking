@@ -60,13 +60,40 @@
 
 今の再開地点を参照。
 
+## 使わせてもらったコードと重み
+
+このリポジトリには、Kaggle で公開されている他の参加者の Notebook のコピーや、それを改変したものが含まれています。Kaggle の公開 Notebook は、作者が別に指定していない限り Apache 2.0 で公開されています。元の作者に感謝します。
+
+**提出に使った土台の Notebook（`submit-*/` はこれらの改変版）**
+
+- [anvithpothula/biohub-x138](https://www.kaggle.com/code/anvithpothula/biohub-x138): x138 系（`submit-x138-*`、`submit-e006-*` 〜 `submit-e033-*`）の土台
+- [amanatar/biohub-geometric-fusion](https://www.kaggle.com/code/amanatar/biohub-geometric-fusion): Geometric Fusion 系（`submit-geometric-fusion`、`submit-geo-*`、`submit-e003-*` 〜 `submit-e005-*`、`submit-e012-*`）の土台
+- [evgendvorkin/biohub-0-947-lb-proxy-score-0-9490](https://www.kaggle.com/code/evgendvorkin/biohub-0-947-lb-proxy-score-0-9490): `submit-proxy-0947`
+- [praxel/biohub-0-902-motion-division-calibration](https://www.kaggle.com/code/praxel/biohub-0-902-motion-division-calibration): `submit-lb0902`、`public-research/praxel_0902`
+- [boristown/lb0-897-with-full-visual-pipeline-and-animation](https://www.kaggle.com/code/boristown/lb0-897-with-full-visual-pipeline-and-animation): `submit-lb0897`、`boristown-lb0897`
+
+**調査のために取得した Notebook（`public-research/`、`public-candidates/`）**
+
+- [pilkwang/biohub-cell-tracking-blend-preprocessings](https://www.kaggle.com/code/pilkwang/biohub-cell-tracking-blend-preprocessings)、[pilkwang/biohub-cell-tracking-learned-graph-w-gap-recovery](https://www.kaggle.com/code/pilkwang/biohub-cell-tracking-learned-graph-w-gap-recovery)
+- [yusuketogashi/biohub-another-approach](https://www.kaggle.com/code/yusuketogashi/biohub-another-approach)、[beicicc/biohub-exp058-center-gap-span-7-75-public](https://www.kaggle.com/code/beicicc/biohub-exp058-center-gap-span-7-75-public)、[kaiwalyaatulraut/biohub-competition-solution](https://www.kaggle.com/code/kaiwalyaatulraut/biohub-competition-solution)
+- [isakatsuyoshi/biohub-rule-based-baseline](https://www.kaggle.com/code/isakatsuyoshi/biohub-rule-based-baseline)、[yaroslavkholmirzayev/biohub-cell-tracking-v4-unet-ilp-reproduction](https://www.kaggle.com/code/yaroslavkholmirzayev/biohub-cell-tracking-v4-unet-ilp-reproduction)
+- `public-candidates/` の 5 本（フォルダ名が `作者__Notebook名`）: abhijithneilabraham/solution、beicicc/biohub-exp051-abhijith-latest、hongdaekim/v3a-direct-learned-graph-submit、lucifer19/celltrack-panther-u-net-ilp-core、vmerckle/biohub-cand-crowd-adaptive-gauss-refine-0709101315
+
+**重み（このリポジトリには含めていない。Kaggle の Dataset から読み込む）**
+
+- [pilkwang/biohub-deepcenter-unet3d-center-prior-v1](https://www.kaggle.com/datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1)、[pilkwang/biohub-temporal-unet3d-seed314159-v1](https://www.kaggle.com/datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1)、[pilkwang/biohub-tracking-support-pack-50ep-v1](https://www.kaggle.com/datasets/pilkwang/biohub-tracking-support-pack-50ep-v1)
+- [anvithpothula/biohub-v1284-head-s075](https://www.kaggle.com/datasets/anvithpothula/biohub-v1284-head-s075)（V1284 head）
+- [giorgosi/biohub-divnet-v2](https://www.kaggle.com/datasets/giorgosi/biohub-divnet-v2)（DivNet）
+
+一部の設定は discussion の投稿を参考にした（例: `READMIT_MIN_SCORE` は discussion 743929）。コンペのデータは含めていない（データの利用条件はコンペの規約に従う）。
+
 ## ドキュメント
 
 - [docs/session_handoff.md](docs/session_handoff.md): 再開する地点と、次に打つコマンド
 - [docs/decisions.md](docs/decisions.md): 守るべき判断
 - [docs/public_notebooks.md](docs/public_notebooks.md): 公開 Notebook の調査
 - [docs/discussion_research.md](docs/discussion_research.md): discussion の調査
-- [docs/server_environment.md](docs/server_environment.md): 研究室サーバー（`139-home`）での作業手順
+- [docs/server_environment.md](docs/server_environment.md): 研究室の GPU サーバーでの作業手順
 - `runs/<ID>.md`: 実験ごとの記録
 
 ## ディレクトリ

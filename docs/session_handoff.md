@@ -15,7 +15,7 @@
 
 1. 上位チームの解法を読む（discussion に公開されたら）。1 位は非公開 0.977。自前の学習や、胚ごとに分けた検証をしていたかを確認し、`docs/retrospective.md` に追記する。
 2. 片付け（2026-09-30 に実施）。
-   - サーバー: NVMe のコピー `~/biohub_fast/`（81 GB）を削除した。HDD の `/mnt/HDD18TB/murakawa/biohub-cell-tracking/`（89 GB、うちデータ 82 GB）は残している（解法を試すときに使う。不要になったら削除してよい）。
+   - サーバー: NVMe に置いた学習データのコピー（81 GB）を削除した。HDD の作業ディレクトリ（89 GB、うちデータ 82 GB）は残している（解法を試すときに使う。不要になったら削除してよい）。
    - ローカル: `local_outputs/` から、Kaggle から取り直せる Kernel の出力（約 1.3 GB）を削除した。必要になったら `kaggle kernels output versavice/<kernel> -p local_outputs/<name>` で取り直せる。ここにしかないもの（`final_scores.json`、`lb/`、`rules/`、`gt4/`、`research*/`、合計 6.7 MB）は残した。
 3. Kaggle 上の非公開 Kernel（`versavice/biohub-*`、約 35 本）は、残しておいても害はない。
 
@@ -42,5 +42,5 @@ kaggle competitions leaderboard biohub-cell-tracking-during-development -d -p lo
 
 ## サーバーの状態（2026-09-24）
 
-- データは `/mnt/HDD18TB/murakawa/biohub-cell-tracking/`。学習データのコピーが NVMe の `~/biohub_fast/train` にある。
+- データは研究室サーバーの作業ディレクトリ（`docs/server_environment.md` の `<ROOT>`）にある。
 - 実行中の biohub ジョブはない。

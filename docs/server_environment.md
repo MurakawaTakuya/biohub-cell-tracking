@@ -2,42 +2,42 @@
 
 作成: 2026-09-23。サーバーの状態は同日の観測値で、割り当てを保証するものではない。
 
+公開用に、サーバーの接続先とパスは `<server>`（SSH の接続名）と `<ROOT>`（作業ディレクトリ）に置き換えている。
+
 ## 役割分担
 
 | 場所 | 役割 |
 | --- | --- |
 | Mac（このディレクトリ） | 操作の起点、コードの編集・レビュー、Kaggle CLI、ドキュメント |
-| `139-home`（研究室サーバー） | データの保存、学習、OOF 評価、後処理パラメータの探索（tmux 上で長時間実行） |
+| `<server>`（研究室の GPU サーバー） | データの保存、学習、OOF 評価、後処理パラメータの探索（tmux 上で長時間実行） |
 | Kaggle Notebook | 非公開テストでの推論と提出（コードコンペなので最終推論は必ず Kaggle 上の T4 で行う） |
 
 サーバーで作った `submission.csv` は提出できない。サーバーで作った重みや設定は Kaggle の **Private Dataset** にアップロードし、Notebook から読み込んで提出する。
 
 ## 接続
 
-- 学外からは `ssh 139-home` を使う（`~/.ssh/config` の `Host *-home` が `lab-vpn` を経由する）。
-- 学内からは `ssh 139` でも接続できる（学外からだとタイムアウトする）。
+- `ssh <server>` で接続する（学外からは研究室の VPN を経由する設定を `~/.ssh/config` に書いておく）。
 - 疎通確認:
 
 ```bash
-ssh 139-home 'hostname; nvidia-smi --query-gpu=index,name,memory.used,utilization.gpu --format=csv,noheader'
+ssh <server> 'hostname; nvidia-smi --query-gpu=index,name,memory.used,utilization.gpu --format=csv,noheader'
 ```
 
 ## サーバーの状況（2026-09-23 に確認）
 
-- ホスト名: `139-741GE-TNRT`
 - GPU: NVIDIA RTX A6000（48 GB）× 4 枚。確認時は 4 枚とも空き（15 MiB、0%）
 - CPU 96 コア、メモリ 251 GB
-- `/mnt/HDD18TB` の空き: 13 TB
+- データ用の HDD に十分な空きがある
 - Python 3.12.3、`/usr/bin/tmux` あり
 - Kaggle 認証情報: `~/.kaggle/access_token`（パーミッション 600、Git 管理外）
-- Kaggle CLI 用の venv: `/mnt/HDD18TB/murakawa/venvs/rsna-kaggle-cli`（RSNA コンペ用に作ったもの。流用するか、下の Biohub 専用 venv を作る）
+- Kaggle CLI 用の venv: ほかのコンペで作ったものを流用するか、下の Biohub 専用 venv を作る
 
 GPU が空いていても、このプロジェクトに割り当てられているわけではない。GPU を使うジョブを始める前に、**使う GPU の番号と時間の目安を毎回ユーザーに確認する**。
 
 ## ディレクトリ構成（予定）
 
 ```
-/mnt/HDD18TB/murakawa/biohub-cell-tracking/
+<ROOT>/
 ├── data/          # コンペのデータ（kaggle competitions download）
 ├── inputs/        # pilkwang の重み、divnet などの公開データセット
 ├── code/          # Mac から rsync したコード
@@ -45,11 +45,11 @@ GPU が空いていても、このプロジェクトに割り当てられてい�
 └── .venv/         # Biohub 専用の Python 環境
 ```
 
-## 初期セットアップ（2026-09-23 に実施済み。学習データは NVMe の `~/biohub_fast/train` にもコピーした）
+## 初期セットアップ（2026-09-23 に実施済み。読み込みを速くするため、学習データを NVMe にもコピーした。コンペ終了後に削除済み）
 
 ```bash
-ssh 139-home
-ROOT=/mnt/HDD18TB/murakawa/biohub-cell-tracking
+ssh <server>
+ROOT=<ROOT>
 mkdir -p $ROOT/{data,inputs,code,runs}
 python3 -m venv $ROOT/.venv && source $ROOT/.venv/bin/activate
 pip install kaggle   # ほかの依存（torch、tracksdata、ILP ソルバーなど）は公開 Notebook の import 文に合わせて追加する
@@ -72,9 +72,9 @@ Kaggle の API 呼び出しは 1 分あたり 30 回以下に抑え、呼び出�
 ## 長時間ジョブの実行（tmux）
 
 ```bash
-ssh 139-home
+ssh <server>
 tmux new -s biohub-<ID>        # 再接続: tmux attach -t biohub-<ID>、一覧: tmux ls
-cd /mnt/HDD18TB/murakawa/biohub-cell-tracking
+cd <ROOT>
 source .venv/bin/activate
 CUDA_VISIBLE_DEVICES=<承認された GPU 番号> python code/<script>.py ... 2>&1 | tee runs/<ID>/log.txt
 # Ctrl-b d でデタッチ。Mac の電源を落としてもジョブは続く
@@ -83,16 +83,16 @@ CUDA_VISIBLE_DEVICES=<承認された GPU 番号> python code/<script>.py ... 2>
 Mac からの状態確認:
 
 ```bash
-ssh 139-home 'tmux ls; tail -5 /mnt/HDD18TB/murakawa/biohub-cell-tracking/runs/<ID>/log.txt; nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader'
+ssh <server> 'tmux ls; tail -5 <ROOT>/runs/<ID>/log.txt; nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader'
 ```
 
 ## コードと成果物の受け渡し
 
 ```bash
 # Mac → サーバー（コード）
-rsync -av --exclude '*output*' ./code/ 139-home:/mnt/HDD18TB/murakawa/biohub-cell-tracking/code/
+rsync -av --exclude '*output*' ./code/ <server>:<ROOT>/code/
 # サーバー → Mac（小さい結果ファイルだけ）
-rsync -av 139-home:/mnt/HDD18TB/murakawa/biohub-cell-tracking/runs/<ID>/summary.json ./runs/<ID>/
+rsync -av <server>:<ROOT>/runs/<ID>/summary.json ./runs/<ID>/
 ```
 
 ## サーバーの成果を Kaggle で提出するまで
